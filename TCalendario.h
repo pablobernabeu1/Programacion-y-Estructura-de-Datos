@@ -25,6 +25,8 @@ class TCalendario {
         bool ModMensaje(char *);
         bool operator ==(TCalendario &);
         bool operator !=(TCalendario &);
+        bool operator>(TCalendario &);
+        bool operator<(TCalendario &);
 
         bool EsVacio();
         int Dia();
