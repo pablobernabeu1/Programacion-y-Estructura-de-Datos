@@ -16,11 +16,13 @@ int main(){
 
 int main(){
 
-    TCalendario c1(19,4,2001, (char *)"Fecha de nacimiento.");
+    TCalendario c1, c4;
+    TCalendario c2(19,4,2001, (char *)"Fecha de nacimiento.");
+    
+    c4 = c1 - 10;
 
-    c1.ModFecha(2,12,2030);
-    c1.ModMensaje((char *)"Fecha de boda.");
-
+    //TCalendario c1(c2);
+    
     cout<<c1.Dia()<<endl;
     cout<<c1.Mes()<<endl;
     cout<<c1.Anyo()<<endl;

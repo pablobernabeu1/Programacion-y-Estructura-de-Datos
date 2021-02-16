@@ -7,15 +7,17 @@ class TCalendario {
     private:
         int dia, mes, anyo;
         char* mensaje;
+        void Copia(const TCalendario &);
+        void fechaPorDefecto(TCalendario &);
 
     public:
         TCalendario();
         TCalendario(int dia, int mes, int anyo, char *mens);
         TCalendario(TCalendario &);
         ~TCalendario();
-        TCalendario & operator=(TCalendario &);
+        TCalendario & operator=(const TCalendario &);
 
-        TCalendario operator+(int);
+        TCalendario operator+(const int);
         TCalendario operator-(int);
         TCalendario operator++(int);
         TCalendario &operator++();

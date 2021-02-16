@@ -5,10 +5,7 @@
 using namespace std;
 
 TCalendario::TCalendario(){
-    dia=1;
-    mes=1;
-    anyo=1900;
-    mensaje = NULL;
+    fechaPorDefecto(*this);
 }
 
 TCalendario::TCalendario(int dia, int mes, int anyo, char *mens){
@@ -37,24 +34,70 @@ TCalendario::TCalendario(int dia, int mes, int anyo, char *mens){
 }
 
 TCalendario::TCalendario(TCalendario &c){
-    this->dia=c.Dia();
-    this->mes=c.Mes();
-    this->anyo=c.Anyo();
-
-    if(c.Mensaje()!=NULL){
-        this->mensaje = new char[strlen(c.Mensaje())+1];
-        strcpy(this->mensaje, c.Mensaje());
-    }
-    else{
-        this->mensaje=NULL;
-    }
+    Copia(c);
 }
 
 TCalendario::~TCalendario(){
-    dia=1;
-    mes=1;
-    anyo=1900;
-    mensaje = NULL;
+    fechaPorDefecto(*this);
+}
+
+TCalendario&
+TCalendario::operator=(const TCalendario &c){
+    if(this != &c){
+        (*this).~TCalendario();
+
+        Copia(c);
+    }
+    return *this;
+}
+
+TCalendario
+TCalendario::operator+(const int n){
+    TCalendario temp;
+    //preguntar si está esto bien o simplemente hay que sumar días.   
+
+    if(n>=0){
+        temp.dia = this->dia + ((n%365)%31);
+        temp.mes = this->mes + ((n%365)/31);
+        temp.anyo = this->anyo + (n/365);
+    }
+
+    if(this->Mensaje()!=NULL){
+        temp.mensaje = new char[strlen(this->Mensaje())+1];
+        strcpy(temp.mensaje, this->Mensaje());
+    }
+    else{
+        temp.mensaje = NULL;
+    }
+
+    return temp;
+}
+
+TCalendario
+TCalendario::operator-(const int n){
+    TCalendario temp;
+    //preguntar si está esto bien o simplemente hay que sumar días.
+
+    temp.dia = this->dia - ((n%365)%31);
+    temp.mes = this->mes - ((n%365)/31);
+    temp.anyo = this->anyo - (n/365);
+
+    if(this->Mensaje()!=NULL){
+        temp.mensaje = new char[strlen(this->Mensaje())+1];
+        strcpy(temp.mensaje, this->Mensaje());
+    }
+    else{
+        temp.mensaje = NULL;
+    }
+
+    if(temp.dia>=1 && temp.dia<=31 && temp.mes>=1 && temp.mes<=12 && temp.anyo>=1900){
+        return temp;
+    }
+    else{
+        fechaPorDefecto(temp);
+    }
+
+    return temp;
 }
 
 bool 
@@ -72,7 +115,7 @@ TCalendario::ModFecha(int d, int m, int a){
 
 bool
 TCalendario::ModMensaje(char *mens){
-    if(mensaje != NULL){
+    if(mens != NULL){
         mensaje = new char[strlen(mens)+1];
         strcpy(mensaje, mens);
         return true;
@@ -107,4 +150,27 @@ TCalendario::Anyo(){
 char *
 TCalendario::Mensaje(){
     return this->mensaje;
+}
+
+void
+TCalendario::Copia(const TCalendario &c){
+    this->dia = c.dia;
+    this->mes = c.mes;
+    this->anyo = c.anyo;
+
+    if(c.mensaje!=NULL){
+        this->mensaje = new char[strlen(c.mensaje+1)];
+        strcpy(this->mensaje, c.mensaje);
+    }
+    else{
+        this->mensaje = NULL;
+    }
+}
+
+void TCalendario::fechaPorDefecto(TCalendario &c){
+    c.dia=1;
+    c.mes=1;
+    c.anyo=1900;
+
+    mensaje = NULL;
 }
