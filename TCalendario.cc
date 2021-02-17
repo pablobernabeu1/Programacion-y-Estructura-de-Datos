@@ -8,7 +8,7 @@ TCalendario::TCalendario(){
     fechaPorDefecto(*this);
 }
 
-TCalendario::TCalendario(int dia, int mes, int anyo, char *mens){
+TCalendario::TCalendario(int dia, int mes, int anyo, char *mens){  // Comentario de comprobacion
 
     if(dia>=1 && dia<=31 && mes>=1 && mes<=12 && anyo>=1900){
         this->dia=dia;
