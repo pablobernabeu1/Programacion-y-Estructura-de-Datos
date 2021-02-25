@@ -9,6 +9,8 @@ class TCalendario {
         char* mensaje;
         void Copia(const TCalendario &);
         void fechaPorDefecto(TCalendario &);
+        void modificarMes(TCalendario &);
+        void modificarAnyo(TCalendario &);
 
     public:
         TCalendario();
@@ -21,14 +23,15 @@ class TCalendario {
         TCalendario operator-(int);
         TCalendario operator++(int);
         TCalendario &operator++();
+        TCalendario operator--(int);
         TCalendario &operator--();
-        
+
         bool ModFecha(int, int, int);
         bool ModMensaje(char *);
-        bool operator ==(TCalendario &);
-        bool operator !=(TCalendario &);
-        bool operator>(TCalendario &);
-        bool operator<(TCalendario &);
+        bool operator ==(const TCalendario &);
+        bool operator !=(const TCalendario &);
+        bool operator>(const TCalendario &);
+        bool operator<(const TCalendario &);
 
         bool EsVacio();
         int Dia();
