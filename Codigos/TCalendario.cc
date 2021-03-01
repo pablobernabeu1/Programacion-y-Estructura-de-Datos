@@ -10,7 +10,7 @@ TCalendario::TCalendario(){
 
 TCalendario::TCalendario(int dia, int mes, int anyo, char *mens){  // Comentario de comprobacion
 
-    if(dia>=1 && dia<=31 && mes>=1 && mes<=12 && anyo>=1900){
+    if(this->comprobarFechaCorrecta(dia, mes, anyo)){
         this->dia=dia;
         this->mes=mes;
         this->anyo=anyo;
@@ -55,9 +55,9 @@ TCalendario::operator+(const int n){
 
     if(n>=0){
         temp.dia = this->dia + ((n%365)%31);
-        //modificarMes(*this);
+        modificarMes(*this);
         temp.mes = this->mes + ((n%365)/31);
-        //modificarAnyo(*this);
+        modificarAnyo(*this);
         temp.anyo = this->anyo + (n/365);
     }
 
@@ -151,14 +151,15 @@ TCalendario::operator--(){
 bool
 TCalendario::ModFecha(int d, int m, int a){
 
-    if(dia>=1 && dia<=31 && mes>=1 && mes<=12 && anyo>=1900){
-        dia = d;
-        mes = m;
-        anyo = a;
-        return true;
+    if(this->comprobarFechaCorrecta(d, m, a)){
+
+      this->dia = d;
+      this->mes = m;
+      this->anyo = anyo;
+
+      return true;
     }
     return false;
-
 }
 
 bool
@@ -169,7 +170,7 @@ TCalendario::ModMensaje(char *mens){
         return true;
     }
     mensaje = NULL;
-    return false;
+    return true;
 }
 
 bool
@@ -188,24 +189,31 @@ TCalendario::operator!=(const TCalendario &c){
 
 bool
 TCalendario::operator>(const TCalendario &c){
-  int contMismaFecha=0;
   if(this->anyo>c.anyo){
     return true;
   }
   else if(this->anyo==c.anyo){
-    contMismaFecha++;
 
     if(this->mes>c.mes){
       return true;
     }
     else if(this->mes==c.mes){
-      contMismaFecha++;
 
       if(this->dia>c.dia){
         return true;
       }
       else if(this->dia==c.dia){
-
+        if(this->Mensaje()!=NULL && c.mensaje!=NULL){
+          if(strcmp(this->Mensaje(), c.mensaje)==true){
+            return false;
+          }
+          else{
+            return false; //Provisional
+          }
+        }
+        else{
+          return false; //Provisional
+        }
       }
       else{
         return false;
@@ -217,6 +225,47 @@ TCalendario::operator>(const TCalendario &c){
   }
   else{
     return false;
+  }
+}
+
+bool
+TCalendario::operator<(const TCalendario &c){
+  if(this->anyo>c.anyo){
+    return false;
+  }
+  else if(this->anyo==c.anyo){
+
+    if(this->mes>c.mes){
+      return false;
+    }
+    else if(this->mes==c.mes){
+
+      if(this->dia>c.dia){
+        return false;
+      }
+      else if(this->dia==c.dia){
+        if(this->Mensaje()!=NULL && c.mensaje!=NULL){
+          if(strcmp(this->Mensaje(), c.mensaje)==true){
+            return false;
+          }
+          else{  // comprobar que cadena es mayor, no se como hacerlo
+            return false; //Provisional
+          }
+        }
+        else{
+          return false; //Provisional
+        }
+      }
+      else{
+        return true;
+      }
+    }
+    else{
+      return true;
+    }
+  }
+  else{
+    return true;
   }
 }
 
@@ -248,6 +297,34 @@ TCalendario::Mensaje(){
     return this->mensaje;
 }
 
+ostream & operator<<(ostream &os, TCalendario &c){
+  if(c.Dia()<10){
+    os<<"0"<<c.Dia()<<"/";
+  }
+  else{
+    os<<c.Dia()<<"/";
+  }
+
+  if(c.Mes()<10){
+    os<<"0"<<c.Mes()<<"/";
+  }
+  else{
+    os<<c.Mes()<<"/";
+  }
+
+  os<<c.Anyo();
+  os<<" ";
+
+  if(c.Mensaje()==NULL){
+    os<<"";
+  }
+  else{
+    os<<c.Mensaje();
+  }
+
+  return os;
+}
+
 void
 TCalendario::Copia(const TCalendario &c){
     this->dia = c.dia;
@@ -261,7 +338,7 @@ TCalendario::Copia(const TCalendario &c){
     else{
         this->mensaje = NULL;
     }
-}
+}   // Función que copia el contenido del objeto que se pasa como argumentos a 'this'
 
 void
 TCalendario::fechaPorDefecto(TCalendario &c){
@@ -270,18 +347,40 @@ TCalendario::fechaPorDefecto(TCalendario &c){
     c.anyo=1900;
 
     mensaje = NULL;
-}
+}   // Función que establece la fecha por defecto al objeto que se le pase
 
 void
 TCalendario::modificarMes(TCalendario &c){
-  if(c.Dia()>31){
     c.ModFecha(1, c.Mes()+1, c.Anyo());
-  }
-}
+}  // Función que cambia de mes si el dia es mayor de 31
 
 void
 TCalendario::modificarAnyo(TCalendario &c){
   if(c.Mes()>12){
     c.ModFecha(c.Dia(), 1, c.Anyo()+1);
   }
+}  // Función que cambia de año si el mes es mayor de 12
+
+bool
+TCalendario::comprobarFechaCorrecta(int dia, int mes, int anyo){   // Función que comprueba el número correcto de días y los años bisiestos
+  bool check=false;
+
+  if(dia>=1 && dia<=31 && mes>=1 && mes<=12 && anyo>=1900){
+    if(!(dia==31 && (mes==2 || mes==4 || mes==6 || mes==9 || mes==11))){
+      int diaFebrero;
+
+      if((anyo%4==0) && ((anyo%100!=0) || (anyo%400==0))){  // En este caso el año es bisiesto
+        diaFebrero = 29;
+      }
+      else{   // En este caso el año no es bisiesto
+        diaFebrero = 28;
+      }
+
+      if(!(mes==2 && dia>diaFebrero)){
+        check=true;
+      }
+
+    }
+  }
+  return check;
 }

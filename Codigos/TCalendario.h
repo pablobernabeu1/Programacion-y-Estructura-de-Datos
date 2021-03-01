@@ -11,6 +11,7 @@ class TCalendario {
         void fechaPorDefecto(TCalendario &);
         void modificarMes(TCalendario &);
         void modificarAnyo(TCalendario &);
+        bool comprobarFechaCorrecta(int, int, int);
 
     public:
         TCalendario();
