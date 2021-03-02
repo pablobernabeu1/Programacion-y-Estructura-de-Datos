@@ -1,6 +1,6 @@
 #include<iostream>
 using namespace std;
-#include "TCalendario.h"
+#include "tcalendario.h"
 /*
 int main(){
 
@@ -40,7 +40,9 @@ int main(){
 
     TCalendario c1(19, 4, 2001, (char *)"Mi fecha de cumpleaños.");
 
-    cout<<c1<<endl;
+    TCalendario c2 = c1+2;
+
+    cout<<c2<<endl;
 
     return 0;
 }

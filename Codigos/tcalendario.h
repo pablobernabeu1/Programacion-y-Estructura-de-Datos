@@ -16,11 +16,11 @@ class TCalendario {
     public:
         TCalendario();
         TCalendario(int dia, int mes, int anyo, char *mens);
-        TCalendario(TCalendario &);
+        TCalendario(const TCalendario &);
         ~TCalendario();
         TCalendario & operator=(const TCalendario &);
 
-        TCalendario operator+(const int);
+        TCalendario operator+(int);
         TCalendario operator-(int);
         TCalendario operator++(int);
         TCalendario &operator++();
@@ -40,6 +40,6 @@ class TCalendario {
         int Anyo();
         char *Mensaje();
 
-        friend ostream & operator<<(ostream &, TCalendario &);
+        friend ostream & operator<<(ostream &, const TCalendario &);
 
 };

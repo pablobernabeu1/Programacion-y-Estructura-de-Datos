@@ -1,6 +1,6 @@
 #include<iostream>
 #include<cstring>
-#include"TCalendario.h"
+#include"tcalendario.h"
 
 using namespace std; // Comprobar github
 
@@ -30,7 +30,7 @@ TCalendario::TCalendario(int dia, int mes, int anyo, char *mens){  // Comentario
 
 }
 
-TCalendario::TCalendario(TCalendario &c){
+TCalendario::TCalendario(const TCalendario &c){
     Copia(c);
 }
 
@@ -297,29 +297,29 @@ TCalendario::Mensaje(){
     return this->mensaje;
 }
 
-ostream & operator<<(ostream &os, TCalendario &c){
-  if(c.Dia()<10){
-    os<<"0"<<c.Dia()<<"/";
+ostream & operator<<(ostream &os, const TCalendario &c){
+  if(c.dia<10){
+    os<<"0"<<c.dia<<"/";
   }
   else{
-    os<<c.Dia()<<"/";
+    os<<c.dia<<"/";
   }
 
-  if(c.Mes()<10){
-    os<<"0"<<c.Mes()<<"/";
+  if(c.mes<10){
+    os<<"0"<<c.mes<<"/";
   }
   else{
-    os<<c.Mes()<<"/";
+    os<<c.mes<<"/";
   }
 
-  os<<c.Anyo();
+  os<<c.anyo;
   os<<" ";
 
-  if(c.Mensaje()==NULL){
+  if(c.mensaje==NULL){
     os<<"";
   }
   else{
-    os<<c.Mensaje();
+    os<<c.mensaje;
   }
 
   return os;
