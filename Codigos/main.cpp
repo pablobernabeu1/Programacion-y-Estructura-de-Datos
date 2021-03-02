@@ -35,14 +35,36 @@ int main(){
     return 0;
 }
 */
-
+/*
 int main(){
 
     TCalendario c1(19, 4, 2001, (char *)"Mi fecha de cumpleaños.");
+    TCalendario c3=c1;
 
-    TCalendario c2 = c1+2;
+    //TCalendario c2 = c1+2;
 
-    cout<<c2<<endl;
+    //cout<<c2+2<<endl;
+
+    cout<<c1<<endl;
+    cout<<c3<<endl;
+
+    if(c3==c1){
+      cout<<"Hola"<<endl;
+    }
+    else{
+      cout<<"Adios"<<endl;
+    }
+
+    return 0;
+}
+*/
+
+int main(){
+
+    TCalendario c1(31, 12, 2001, (char *)"Mi fecha de cumpleaños.");
+
+    cout<<(c1++)<<endl;
+
 
     return 0;
 }

@@ -112,6 +112,7 @@ TCalendario::operator++(int n){
 
 TCalendario&
 TCalendario::operator++(){
+
   dia++;
   modificarMes(*this);
   modificarAnyo(*this);
@@ -177,7 +178,7 @@ bool
 TCalendario::operator==(const TCalendario &c){
   bool temp;
 
-  temp == ((this->dia == c.dia) && (this->mes == c.mes) && (this->anyo == c.anyo) && strcmp(this->mensaje, c.mensaje));
+  temp = ((this->dia == c.dia) && (this->mes == c.mes) && (this->anyo == c.anyo) && strcmp(this->mensaje, c.mensaje)==0);
 
   return temp;
 }
@@ -313,13 +314,13 @@ ostream & operator<<(ostream &os, const TCalendario &c){
   }
 
   os<<c.anyo;
-  os<<" ";
+  os<<" \"";
 
   if(c.mensaje==NULL){
-    os<<"";
+    os<<"\"";
   }
   else{
-    os<<c.mensaje;
+    os<<c.mensaje<<"\"";
   }
 
   return os;
@@ -332,7 +333,7 @@ TCalendario::Copia(const TCalendario &c){
     this->anyo = c.anyo;
 
     if(c.mensaje!=NULL){
-        this->mensaje = new char[strlen(c.mensaje+1)];
+        this->mensaje = new char[strlen(c.mensaje)+1];
         strcpy(this->mensaje, c.mensaje);
     }
     else{
@@ -351,7 +352,10 @@ TCalendario::fechaPorDefecto(TCalendario &c){
 
 void
 TCalendario::modificarMes(TCalendario &c){
+  if(c.Dia()>31){
+    cout<<"Hola, estoy aqui"<<endl;
     c.ModFecha(1, c.Mes()+1, c.Anyo());
+  }
 }  // Función que cambia de mes si el dia es mayor de 31
 
 void
