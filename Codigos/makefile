@@ -12,10 +12,16 @@ tcalendario.o: tcalendario.h tcalendario.cpp
 
 
 tad: tad.o tcalendario.o
-	g++ -o tad tad01.o tcalendario.o
+	g++ -o tad tad04.o tcalendario.o
 
-tad.o: tad01.cpp tcalendario.h
-	g++ -c tad01.cpp
+tad.o: tad04.cpp tcalendario.h
+	g++ -c tad04.cpp
 
 clean:
-	rm main.o tcalendario.o main tad tad01.o
+	rm main.o tcalendario.o main tad tad04.o
+
+m:
+	./main
+
+t:
+	./tad

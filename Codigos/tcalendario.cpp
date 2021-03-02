@@ -2,7 +2,7 @@
 #include<cstring>
 #include"tcalendario.h"
 
-using namespace std; // Comprobar github
+using namespace std;
 
 TCalendario::TCalendario(){
     fechaPorDefecto(*this);
@@ -55,10 +55,10 @@ TCalendario::operator+(const int n){
 
     if(n>=0){
         temp.dia = this->dia + ((n%365)%31);
-        modificarMes(*this);
         temp.mes = this->mes + ((n%365)/31);
-        modificarAnyo(*this);
         temp.anyo = this->anyo + (n/365);
+
+        
     }
 
     if(this->Mensaje()!=NULL){
@@ -353,7 +353,6 @@ TCalendario::fechaPorDefecto(TCalendario &c){
 void
 TCalendario::modificarMes(TCalendario &c){
   if(c.Dia()>31){
-    cout<<"Hola, estoy aqui"<<endl;
     c.ModFecha(1, c.Mes()+1, c.Anyo());
   }
 }  // Función que cambia de mes si el dia es mayor de 31
