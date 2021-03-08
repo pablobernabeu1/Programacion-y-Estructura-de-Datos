@@ -1,6 +1,7 @@
 #include<iostream>
-using namespace std;
+#include<cstring>
 
+using namespace std;
 
 class TCalendario {
 
@@ -9,8 +10,6 @@ class TCalendario {
         char* mensaje;
         void Copia(const TCalendario &);
         void fechaPorDefecto(TCalendario &);
-        void modificarMes(TCalendario &);
-        void modificarAnyo(TCalendario &);
         bool comprobarFechaCorrecta(int, int, int);
 
     public:

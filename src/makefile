@@ -1,4 +1,4 @@
-# Pablo Antonio Bernabeu Cartagena 20083111-V
+# Pablo Antonio Bernabeu Cartagena 20103111-V
 
 main: main.o tcalendario.o
 	g++ -o main main.o tcalendario.o
@@ -12,13 +12,13 @@ tcalendario.o: tcalendario.h tcalendario.cpp
 
 
 tad: tad.o tcalendario.o
-	g++ -o tad tad04.o tcalendario.o
+	g++ -o tad tad10.o tcalendario.o
 
-tad.o: tad04.cpp tcalendario.h
-	g++ -c tad04.cpp
+tad.o: tad10.cpp tcalendario.h
+	g++ -c tad10.cpp
 
 clean:
-	rm main.o tcalendario.o main tad tad04.o
+	rm main.o tcalendario.o main tad tad10.o
 
 m:
 	./main

@@ -1,8 +1,4 @@
-#include<iostream>
-#include<cstring>
 #include"tcalendario.h"
-
-using namespace std;
 
 TCalendario::TCalendario(){
     fechaPorDefecto(*this);
@@ -50,23 +46,53 @@ TCalendario::operator=(const TCalendario &c){
 
 TCalendario
 TCalendario::operator+(const int n){
-    TCalendario temp;
+    TCalendario temp(*this);
     //preguntar si está esto bien o simplemente hay que sumar días.
 
     if(n>=0){
-        temp.dia = this->dia + ((n%365)%31);
-        temp.mes = this->mes + ((n%365)/31);
-        temp.anyo = this->anyo + (n/365);
+      temp.dia=temp.dia+n;
 
-        
-    }
+      int diaMes;
 
-    if(this->Mensaje()!=NULL){
-        temp.mensaje = new char[strlen(this->Mensaje())+1];
-        strcpy(temp.mensaje, this->Mensaje());
-    }
-    else{
-        temp.mensaje = NULL;
+      diaMes=30;
+      if(temp.mes==1 || temp.mes==3 || temp.mes==5 || temp.mes==7 || temp.mes==8 || temp.mes==10 || temp.mes==12){
+        diaMes=31;
+      }
+      if(temp.mes==2){
+        if((temp.anyo%4==0) && ((temp.anyo%100!=0) || (temp.anyo%400==0))) {  // En este caso el año es bisiesto
+          diaMes = 29;
+        }
+        else{   // En este caso el año no es bisiesto
+          diaMes = 28;
+        }
+      }
+
+      while(temp.dia>diaMes){
+        temp.dia = temp.dia-diaMes;
+        temp.mes++;
+
+        while(temp.mes>12){
+          temp.anyo++;
+          temp.mes=1;
+        }
+
+        diaMes=30;
+        if(temp.mes==1 || temp.mes==3 || temp.mes==5 || temp.mes==7 || temp.mes==8 || temp.mes==10 || temp.mes==12){
+          diaMes=31;
+        }
+
+        if(temp.mes==2){
+          if((temp.anyo%4==0) && ((temp.anyo%100!=0) || (temp.anyo%400==0))) {  // En este caso el año es bisiesto
+            diaMes = 29;
+          }
+          else{   // En este caso el año no es bisiesto
+            diaMes = 28;
+          }
+        }
+
+
+      }
+
     }
 
     return temp;
@@ -75,7 +101,6 @@ TCalendario::operator+(const int n){
 TCalendario
 TCalendario::operator-(const int n){
     TCalendario temp;
-    //preguntar si está esto bien o simplemente hay que sumar días.
 
     temp.dia = this->dia - ((n%365)%31);
     temp.mes = this->mes - ((n%365)/31);
@@ -104,8 +129,6 @@ TCalendario::operator++(int n){
   TCalendario temp(*this);
 
   dia++;
-  modificarMes(*this);
-  modificarAnyo(*this);
 
   return temp;
 }
@@ -114,8 +137,6 @@ TCalendario&
 TCalendario::operator++(){
 
   dia++;
-  modificarMes(*this);
-  modificarAnyo(*this);
 
   return *this;
 }
@@ -347,22 +368,8 @@ TCalendario::fechaPorDefecto(TCalendario &c){
     c.mes=1;
     c.anyo=1900;
 
-    mensaje = NULL;
+    c.mensaje = NULL;
 }   // Función que establece la fecha por defecto al objeto que se le pase
-
-void
-TCalendario::modificarMes(TCalendario &c){
-  if(c.Dia()>31){
-    c.ModFecha(1, c.Mes()+1, c.Anyo());
-  }
-}  // Función que cambia de mes si el dia es mayor de 31
-
-void
-TCalendario::modificarAnyo(TCalendario &c){
-  if(c.Mes()>12){
-    c.ModFecha(c.Dia(), 1, c.Anyo()+1);
-  }
-}  // Función que cambia de año si el mes es mayor de 12
 
 bool
 TCalendario::comprobarFechaCorrecta(int dia, int mes, int anyo){   // Función que comprueba el número correcto de días y los años bisiestos
