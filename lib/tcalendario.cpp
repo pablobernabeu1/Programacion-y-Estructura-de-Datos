@@ -1,4 +1,4 @@
-#include"tcalendario.h"
+#include "tcalendario.h"
 
 TCalendario::TCalendario(){
     fechaPorDefecto(*this);
