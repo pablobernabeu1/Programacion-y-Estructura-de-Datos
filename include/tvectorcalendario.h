@@ -18,8 +18,8 @@ class TVectorCalendario {
     ~TVectorCalendario();
     TVectorCalendario & operator=(const TVectorCalendario &);
 
-    bool operator==(TVectorCalendario &);
-    bool operator!=(TVectorCalendario &);
+    bool operator==(const TVectorCalendario &);
+    bool operator!=(const TVectorCalendario &);
     TCalendario & operator[](int);
     TCalendario operator[](int) const;
     int Tamano();
@@ -28,6 +28,6 @@ class TVectorCalendario {
     void MostrarMensajes(int, int, int);
     bool Redimensionar(int);
 
-    friend ostream & operator<<(ostream &, TVectorCalendario &);
+    friend ostream & operator<<(ostream &, const TVectorCalendario &);
 
 };
