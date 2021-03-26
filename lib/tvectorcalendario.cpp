@@ -121,7 +121,7 @@ int
 TVectorCalendario::Ocupadas(){
   int cont=0;
 
-  for(int i=0; i<=this->tamano; i++){
+  for(int i=0; i<this->tamano; i++){
     if(this->c[i].EsVacio()==false){
       cont++;
     }
@@ -142,11 +142,71 @@ TVectorCalendario::ExisteCal(TCalendario &c){
 
 void
 TVectorCalendario::MostrarMensajes(int d, int m, int a){
+  if(!this->comprobarFechaCorrecta(d, m, a)){
 
+  }
+  else{
+
+    TCalendario cal(d, m, a, NULL);
+    TVectorCalendario vc;
+    int tamVc=0;
+
+    for(int i=0; i<this->tamano; i++){
+      if(this->c[i]>cal || this->c[i]==cal){
+        vc.tamano++;
+      }
+    }
+
+    for(int i=0; i<this->tamano; i++){
+      if(this->c[i]>cal || this->c[i]==cal){
+        vc.c[tamVc] = this->c[i];
+        tamVc++;
+      }
+    }
+
+  }
 }
 
-ostream & operator<<(ostream &os, const TVectorCalendario &c){
+ostream & operator<<(ostream &os, const TVectorCalendario &vc){
 
+  if(vc.tamano == 0){
+    os<<"[]";
+  }
+  else{
+    os<<"[";
+    for(int i=0; i<vc.tamano; i++){
+      if(i==vc.tamano-1){
+        os<<"("<<(i+1)<<") "<<vc[i]<<"]";
+      }
+      else{
+        os<<"("<<(i+1)<<") "<<vc[i]<<", ";
+      }
+    }
+  }
 
   return os;
+}
+
+bool
+TVectorCalendario::comprobarFechaCorrecta(int dia, int mes, int anyo){   // Función que comprueba el número correcto de días y los años bisiestos
+  bool check=false;
+
+  if(dia>=1 && dia<=31 && mes>=1 && mes<=12 && anyo>=1900){
+    if(!(dia==31 && (mes==2 || mes==4 || mes==6 || mes==9 || mes==11))){
+      int diaFebrero;
+
+      if((anyo%4==0) && ((anyo%100!=0) || (anyo%400==0))){  // En este caso el año es bisiesto
+        diaFebrero = 29;
+      }
+      else{   // En este caso el año no es bisiesto
+        diaFebrero = 28;
+      }
+
+      if(!(mes==2 && dia>diaFebrero)){
+        check=true;
+      }
+
+    }
+  }
+  return check;
 }

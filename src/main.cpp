@@ -1,6 +1,7 @@
 #include<iostream>
+#include "tvectorcalendario.h"
 using namespace std;
-#include "tcalendario.h"
+
 /*
 int main(){
 
@@ -58,13 +59,27 @@ int main(){
     return 0;
 }
 */
-
+/*
 int main(){
 
     TCalendario c1(31, 12, 2001, (char *)"Mi fecha de cumpleaños.");
+    TVectorCalendario vc;
 
-    cout<<(c1++)<<endl;
+    //cout<<(c1++)<<endl;
 
 
     return 0;
+}
+*/
+
+
+int main(){
+
+  TVectorCalendario a, b(-3), c(4);
+  cout << a.Tamano() << endl;
+  cout << b.Tamano() << endl;
+  cout << c.Tamano() << endl;
+  cout << c.Ocupadas() << endl;
+  return 0;
+
 }

@@ -10,6 +10,7 @@ class TVectorCalendario {
     TCalendario *c;
     int tamano;
     TCalendario error;
+    bool comprobarFechaCorrecta(int, int, int);
 
   public:
     TVectorCalendario();
