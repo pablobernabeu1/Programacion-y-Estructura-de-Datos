@@ -21,9 +21,15 @@ TVectorCalendario::TVectorCalendario(const TVectorCalendario &vc):error() {
   this->tamano = vc.tamano;
   this->c = new TCalendario[vc.tamano];
 
-  for(int i=0; i<=this->tamano; i++){
+  if(this->c == NULL){
+    this->tamano = 0;
+  }
+
+  for(int i=0; i<this->tamano; i++){
     this->c[i] = vc.c[i];
   }
+
+  this->error = vc.error;
 
 }
 
@@ -43,11 +49,11 @@ TVectorCalendario::operator=(const TVectorCalendario &vc) {
     this->tamano = vc.tamano;
     this->c = new TCalendario[this->tamano];
 
-    if(this->c = NULL){
+    if(this->c == NULL){
       this->tamano = 0;
     }
 
-    for(int i=0; i<=this->tamano; i++){
+    for(int i=0; i<this->tamano; i++){
       this->c[i] = vc.c[i];
     }
 
@@ -103,7 +109,7 @@ TVectorCalendario::operator[](int n){
 TCalendario
 TVectorCalendario::operator[](int n) const{
 
-  for(int i=1; i<this->tamano; i++){
+  for(int i=1; i<=this->tamano; i++){
     if(n==i){
       return this->c[n-1];
     }
@@ -143,28 +149,70 @@ TVectorCalendario::ExisteCal(TCalendario &c){
 void
 TVectorCalendario::MostrarMensajes(int d, int m, int a){
   if(!this->comprobarFechaCorrecta(d, m, a)){
-
+    cout<<"[]";
   }
   else{
 
     TCalendario cal(d, m, a, NULL);
-    TVectorCalendario vc;
-    int tamVc=0;
+    int tam=0;
 
     for(int i=0; i<this->tamano; i++){
-      if(this->c[i]>cal || this->c[i]==cal){
-        vc.tamano++;
+      if(this->c[i]==cal || this->c[i]>cal){
+        tam++;
       }
     }
 
+    cout<<"[";
+
     for(int i=0; i<this->tamano; i++){
-      if(this->c[i]>cal || this->c[i]==cal){
-        vc.c[tamVc] = this->c[i];
-        tamVc++;
+      if(this->c[i]==cal || this->c[i]>cal){
+        if(i==this->tamano-1){
+          cout<<c[i];
+        }
+        else{
+          cout<<c[i]<<", ";
+        }
+
       }
     }
+
+    cout<<"]"<<endl;
 
   }
+}
+
+bool
+TVectorCalendario::Redimensionar(int n){
+  if(n<=0 || n==this->tamano){
+    return false;
+  }
+  else if(n>0 && n>this->tamano){
+    TVectorCalendario vc2(n);
+
+    for(int i=0; i<this->tamano; i++){
+      vc2.c[i] = this->c[i];
+    }
+    for(int i=this->tamano+1; i<n; i++){
+      TCalendario cal;
+      vc2[i] = cal;
+    }
+    *this = vc2;
+
+    return true;
+  }
+  else if(n>0 && n<this->tamano){
+    TVectorCalendario vc2(n);
+
+    for(int i=1; i<=n; i++){
+      vc2[i] = this->c[i-1];
+    }
+
+    *this = vc2;
+
+    return true;
+  }
+
+  return false;
 }
 
 ostream & operator<<(ostream &os, const TVectorCalendario &vc){
@@ -174,12 +222,12 @@ ostream & operator<<(ostream &os, const TVectorCalendario &vc){
   }
   else{
     os<<"[";
-    for(int i=0; i<vc.tamano; i++){
-      if(i==vc.tamano-1){
-        os<<"("<<(i+1)<<") "<<vc[i]<<"]";
+    for(int i=1; i<=vc.tamano; i++){
+      if(i==vc.tamano){
+        os<<"("<<i<<") "<<vc[i]<<"]";
       }
       else{
-        os<<"("<<(i+1)<<") "<<vc[i]<<", ";
+        os<<"("<<i <<") "<<vc[i]<<", ";
       }
     }
   }

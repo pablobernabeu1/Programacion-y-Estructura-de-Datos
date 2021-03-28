@@ -1,5 +1,6 @@
 #include<iostream>
 #include<cstring>
+#include "tnodocalendario.h"
 
 using namespace std;
 
@@ -10,8 +11,13 @@ class TListaPos {
 
   public:
     TListaPos();
-    TListaPos(ListaPos &);
-    ~ListaPos();
-    ListaPos & operator=(ListaPos &);
+    TListaPos(TListaPos &);
+    ~TListaPos();
+    TListaPos & operator=(TListaPos &);
+
+    bool operator==(TListaPos &);
+    bool operator!=(TListaPos &);
+    TListaPos Siguiente();
+    bool EsVacia();
 
 };
