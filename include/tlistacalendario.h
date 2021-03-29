@@ -1,3 +1,6 @@
+#ifndef tnodocalendario_h
+#define tnodocalendario_h
+
 #include<iostream>
 #include<cstring>
 #include "tcalendario.h"
@@ -9,14 +12,24 @@ class TNodoCalendario {
   private:
     TCalendario c;
     TNodoCalendario *siguiente;
+    bool operator==(const TNodoCalendario &);
+    bool operator!=(const TNodoCalendario &);
 
   public:
     TNodoCalendario();
-    TNodoCalendario(TNodoCalendario &);
+    TNodoCalendario(const TNodoCalendario &);
     ~TNodoCalendario();
-    TNodoCalendario & operator=(TNodoCalendario &);
+    TNodoCalendario & operator=(const TNodoCalendario &);
+
+    friend class TListaPos;
+    friend class TListaCalendario;
 
 };
+
+#endif
+
+#ifndef tlistapos_h
+#define tlistapos_h
 
 class TListaPos {
 
@@ -27,11 +40,35 @@ class TListaPos {
     TListaPos();
     TListaPos(TListaPos &);
     ~TListaPos();
-    TListaPos & operator=(TListaPos &);
+    TListaPos & operator=(const TListaPos &);
 
-    bool operator==(TListaPos &);
-    bool operator!=(TListaPos &);
+    bool operator==(const TListaPos &);
+    bool operator!=(const TListaPos &);
     TListaPos Siguiente();
     bool EsVacia();
 
+    friend class TListaCalendario;
+
 };
+
+#endif
+
+
+#ifndef tlistacalendario_h
+#define tlistacalendario_h
+
+class TListaCalendario {
+
+  TNodoCalendario *primero;
+
+  TListaCalendario();
+  TListaCalendario(TListaCalendario &);
+  ~TListaCalendario();
+  TListaCalendario & operator=(TListaCalendario &);
+
+  TListaPos Primera();
+
+
+};
+
+#endif
