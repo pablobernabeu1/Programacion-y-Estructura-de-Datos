@@ -205,7 +205,7 @@ bool TListaCalendario::Insertar(const TCalendario& c) {
 		while(!lp.EsVacia()){
 			if(lp.pos->c>c){
 				if(lp==Primera()){
-          cout<<"FF"<<endl;
+          //cout<<"FF"<<endl;
 					aux->c=c;
 					aux->siguiente=lp.pos;
 					primero=aux;
@@ -213,7 +213,7 @@ bool TListaCalendario::Insertar(const TCalendario& c) {
 				}
 			}
 			else{
-        cout<<"Estoy aqi"<<endl;
+        //cout<<"Estoy aqi"<<endl;
 				if(lp.Siguiente().EsVacia()){
           //cout<<"Estoy aqui2"<<endl;
 					aux->c=c;
@@ -222,6 +222,7 @@ bool TListaCalendario::Insertar(const TCalendario& c) {
 					return true;
 				}
 				else if(lp.Siguiente().pos->c>c){
+          //cout<<"Estoy aqui2"<<endl;
 					aux->c=c;
 					aux->siguiente=lp.pos->siguiente;
 					ant.pos->siguiente=aux;
@@ -262,7 +263,13 @@ TListaCalendario::Borrar(const TCalendario &cal){
 
 }
 
-bool TListaCalendario::EsVacia() {
+bool
+TListaCalendario::Borrar(const TListaPos &lp){
+  return Borrar(Obtener(lp));
+}
+
+bool
+TListaCalendario::EsVacia() {
 	if(primero==NULL){
 		return true;
 	}
