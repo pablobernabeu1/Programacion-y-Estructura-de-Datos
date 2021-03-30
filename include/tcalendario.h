@@ -3,6 +3,9 @@
 
 using namespace std;
 
+#ifndef tcalendario_h
+#define tcalendario_h
+
 class TCalendario {
 
     private:
@@ -42,3 +45,5 @@ class TCalendario {
         friend ostream & operator<<(ostream &, const TCalendario &);
 
 };
+
+#endif

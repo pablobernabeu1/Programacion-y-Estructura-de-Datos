@@ -9,13 +9,8 @@ TNodoCalendario::TNodoCalendario(const TNodoCalendario &nc): c(nc.c){
 }
 
 TNodoCalendario::~TNodoCalendario(){
-  if(this->siguiente==NULL){
-    c.~TCalendario();
-  }
-  else{
-    this->siguiente=NULL;
-    c.~TCalendario();
-  }
+  this->siguiente=NULL;
+  c.~TCalendario();
 }
 
 TNodoCalendario&
@@ -109,16 +104,18 @@ TListaCalendario::TListaCalendario(const TListaCalendario &lc){
 } //Seguramente hay que corregirlo
 
 TListaCalendario::~TListaCalendario(){
-  TListaPos p, q;
-  q = Primera();
 
-  while(!q.EsVacia()){
-    p=q;
-    q = q.Siguiente();
-    delete p.pos;
+  TNodoCalendario *nc = NULL;
+
+  while(!EsVacia()){
+    nc = this->primero;
+    this->primero = this->primero->siguiente;
+
+    if(nc!=NULL){
+      delete nc;
+      nc = NULL;
+    }
   }
-
-  this->primero = NULL;
 
 }
 
@@ -157,10 +154,28 @@ TListaCalendario::operator+(const TListaCalendario &lc){
   TListaPos lp(Primera());
   TListaPos lp2(lc.Primera());
 
-  for(int i=0; i<Longitud(); i++){ // cambiar por un while
-    //lcSuma
+  for(int i=0; i<Longitud(); i++){
+    lcSuma.Insertar(lp.pos->c);
+    lp = lp.Siguiente();
+  }
+  for(int i=0; i<lc.Longitud(); i++){
+    lcSuma.Insertar(lp2.pos->c);
+    lp2 = lp2.Siguiente();
   }
 
+  return lcSuma;
+}
+
+TListaCalendario
+TListaCalendario::operator-(const TListaCalendario &lc){
+
+  TListaCalendario lcSuma(*this);
+  TListaPos lp;
+
+  while(!lp.EsVacia()){
+    lcSuma.Borrar(Obtener(lp));
+    lp = lp.Siguiente();
+  }
 
   return lcSuma;
 }
@@ -175,8 +190,81 @@ TListaCalendario::Insertar(const TCalendario &cal){
   lp=Primera();
   ant = Primera();
 
+  if(lp.EsVacia()){
+    lp.pos=new TNodoCalendario();
+    lp.pos->c = cal;
+    this->primero = lp.pos;
+    return true;
+  }
+
+  if(Buscar(cal)){
+    return false;
+  }
+  else{
+    while(!lp.EsVacia()){
+      if(lp.pos->c>cal){
+        if(lp==Primera()){
+
+          nc->c=cal;
+          nc->siguiente = lp.pos;
+          this->primero = nc;
+          return true;
+
+        }
+        if(lp.Siguiente().pos->c>cal){
+          if(lp.Siguiente().EsVacia()){
+            nc->c = cal;
+            nc->siguiente = lp.Siguiente().pos;
+            lp.pos->siguiente = nc;
+            return true;
+          }
+          else{
+            nc->c = cal;
+            nc->siguiente = lp.pos->siguiente;
+            ant.pos->siguiente = nc;
+            return true;
+          }
+        }
+      }
+    }
+  }
+
+
+  return true;
+
+}
+
+bool
+TListaCalendario::Borrar(const TCalendario &cal){
+  TListaPos lp;
+  TListaPos ant;
+  TNodoCalendario *nc = new TNodoCalendario();
+  TListaCalendario lc(*this);
+
+  if(!lp.EsVacia() && Buscar(cal)){
+    for(int i=0; i<Longitud(); i++){
+      if(lp.pos->c==cal){
+        if(i==0){
+          nc = this->primero;
+          this->primero = lp.Siguiente().pos;
+        }
+        else{
+          nc = lp.Siguiente().pos;
+          ant.pos->siguiente = nc;
+        }
+        return true;
+      }
+      ant = lp;
+      lp = lp.Siguiente();
+    }
+  }
   return false;
 
+}
+
+bool
+TListaCalendario::EsVacia() const {
+  return (primero==NULL);
 }
 
 TCalendario
@@ -191,7 +279,7 @@ TListaCalendario::Obtener(const TListaPos &lp) const {
 }
 
 bool
-TListaCalendario::Buscar(const TCalendario &cal){
+TListaCalendario::Buscar(const TCalendario &cal) const {
 
   TListaPos lp;
   TListaCalendario lc(*this);
@@ -208,7 +296,7 @@ TListaCalendario::Buscar(const TCalendario &cal){
 }
 
 int
-TListaCalendario::Longitud(){
+TListaCalendario::Longitud() const {
   int longitud=0;
   TListaPos lp ;
   lp = Primera();
@@ -224,6 +312,35 @@ TListaCalendario::Longitud(){
 TListaPos
 TListaCalendario::Primera() const {
   TListaPos lp;
-  lp.pos = primero;
+
+  cout<<!EsVacia()<<endl;
+
+  /*if(!EsVacia()){
+    cout<<"Hola"<<endl;
+    lp.pos = this->primero;
+  }*/
+
   return lp;
+}
+
+ostream & operator<<(ostream &os, const TListaCalendario &lc){
+  TListaPos lp = lc.Primera();
+  cout<<"Hola"<<endl;
+
+  //os<<"<";
+  //while(!lp.EsVacia()){
+    /*
+    os<<lc.Obtener(lp);
+    lp = lp.Siguiente();
+
+    if(!lp.EsVacia()){
+      os<<" ";
+    }
+    */
+  //}
+  //os<<">";
+
+  //cout<<"Adios"<<endl;
+
+  return os;
 }

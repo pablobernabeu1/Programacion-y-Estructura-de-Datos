@@ -1,6 +1,8 @@
-#include<iostream>
-#include "tvectorcalendario.h"
+#include <iostream>
+
 using namespace std;
+
+#include "tlistacalendario.h"
 
 /*
 int main(){
@@ -100,29 +102,22 @@ int main(){
 }
 */
 
+int
+main(void)
+{
+   TListaCalendario l1;
 
-int main(){
+   //TCalendario c1(14, 12, 1966, (char*) "Fecha Correcta");
+   //TCalendario c2(1, 1, 1954, (char*) "Fecha Correcta");
 
-  TVectorCalendario a(3), b(3);
-  TCalendario ca1(1,1,2006, (char*) "uno"), ca2(1,2,2006, (char*) "dos"), ca3(1,3,2006, (char*) "tres");
+   cout << l1 << endl;
 
-  b[1] = ca1;
-  b[2] = ca2;
-  b[3] = ca3;
-
-  cout << "a=" << a << endl;
-  cout << "b=" << b << endl;
-
-  a = b;
-
-  cout << "a=" << a << endl;
-  cout << "b=" << b << endl;
-
-  b.Redimensionar(5);
-
-  cout << "a=" << a << endl;
-  cout << "b=" << b << endl;
-
-  return 0;
-
+   //cout<<"Termino"<<endl;
+   /*
+   l1.Insertar(c1);
+   cout << l1 << endl;
+   l1.Insertar(c2);
+   cout << l1 << endl;
+   */
+   return 0;
 }

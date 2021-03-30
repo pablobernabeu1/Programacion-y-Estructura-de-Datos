@@ -1,12 +1,9 @@
-#ifndef tnodocalendario_h
-#define tnodocalendario_h
-
-#include<iostream>
-#include<cstring>
 #include "tcalendario.h"
-
 using namespace std;
 
+
+#ifndef tnodocalendario_h
+#define tnodocalendario_h
 class TNodoCalendario {
 
   private:
@@ -25,12 +22,11 @@ class TNodoCalendario {
     friend class TListaCalendario;
 
 };
-
 #endif
+
 
 #ifndef tlistapos_h
 #define tlistapos_h
-
 class TListaPos {
 
   private:
@@ -50,17 +46,16 @@ class TListaPos {
     friend class TListaCalendario;
 
 };
-
 #endif
 
 
 #ifndef tlistacalendario_h
 #define tlistacalendario_h
-
 class TListaCalendario {
 
-  TNodoCalendario *primero;
-
+  private:
+    TNodoCalendario *primero;
+  public:
   TListaCalendario();
   TListaCalendario(const TListaCalendario &);
   ~TListaCalendario();
@@ -72,18 +67,17 @@ class TListaCalendario {
   bool Insertar(const TCalendario &);
   bool Borrar(const TCalendario &);
   bool Borrar(const TListaPos &);
-  bool EsVacia();
+  bool EsVacia() const;
   TCalendario Obtener(const TListaPos &) const;
-  bool Buscar(const TCalendario &);
-  int Longitud();
+  bool Buscar(const TCalendario &) const;
+  int Longitud() const;
   TListaPos Primera() const;
   TListaPos Ultima();
   TListaCalendario SumarSubl(int I_L1, int F_L1, TListaCalendario &L2, int I_L2, int F_L2);
   TListaCalendario ExtraerRango(int n1, int n2);
 
-  friend ostream & operator<<(ostream &, TListaCalendario &);
+  friend ostream & operator<<(ostream &os, const TListaCalendario &lc);
 
 
 };
-
 #endif
