@@ -31,7 +31,16 @@ TCalendario::TCalendario(const TCalendario &c){
 }
 
 TCalendario::~TCalendario(){
-    fechaPorDefecto(*this);
+    this->dia = 1;
+    this->mes = 1;
+    this->anyo = 1900;
+    if(this->mensaje!=NULL){
+      delete[] this->mensaje;
+      this->mensaje = NULL;
+    }
+    else{
+      this->mensaje=NULL;
+    }
 }
 
 TCalendario&
@@ -225,16 +234,22 @@ TCalendario::operator>(const TCalendario &c){
         return true;
       }
       else if(this->dia==c.dia){
-        if(this->Mensaje()!=NULL && c.mensaje!=NULL){
-          if(strcmp(this->Mensaje(), c.mensaje)==true){
-            return false;
-          }
-          else{
-            return false; //Provisional
-          }
+        if(this->mensaje==NULL && c.mensaje==NULL){
+          return false;
+        }
+        else if(this->mensaje==NULL || c.mensaje==NULL){
+          return false;
         }
         else{
-          return false; //Provisional
+          if(strcmp(this->mensaje, c.mensaje)==0){
+            return false;
+          }
+          else if(strcmp(this->mensaje, c.mensaje)>0){
+            return true;
+          }
+          else{
+            return false;
+          }
         }
       }
       else{
@@ -252,43 +267,7 @@ TCalendario::operator>(const TCalendario &c){
 
 bool
 TCalendario::operator<(const TCalendario &c){
-  if(this->anyo>c.anyo){
-    return false;
-  }
-  else if(this->anyo==c.anyo){
-
-    if(this->mes>c.mes){
-      return false;
-    }
-    else if(this->mes==c.mes){
-
-      if(this->dia>c.dia){
-        return false;
-      }
-      else if(this->dia==c.dia){
-        if(this->Mensaje()!=NULL && c.mensaje!=NULL){
-          if(strcmp(this->Mensaje(), c.mensaje)==true){
-            return false;
-          }
-          else{  // comprobar que cadena es mayor, no se como hacerlo
-            return false; //Provisional
-          }
-        }
-        else{
-          return false; //Provisional
-        }
-      }
-      else{
-        return true;
-      }
-    }
-    else{
-      return true;
-    }
-  }
-  else{
-    return true;
-  }
+  return !(*this > c);
 }
 
 bool

@@ -2,9 +2,13 @@
 using namespace std;
 
 
-#ifndef tnodocalendario_h
-#define tnodocalendario_h
+#ifndef TLISTACALENDARIO_H_
+#define TLISTACALENDARIO_H_
+
 class TNodoCalendario {
+
+  friend class TListaPos;
+  friend class TListaCalendario;
 
   private:
     TCalendario c;
@@ -18,16 +22,11 @@ class TNodoCalendario {
     ~TNodoCalendario();
     TNodoCalendario & operator=(const TNodoCalendario &);
 
-    friend class TListaPos;
-    friend class TListaCalendario;
-
 };
-#endif
 
-
-#ifndef tlistapos_h
-#define tlistapos_h
 class TListaPos {
+
+  friend class TListaCalendario;
 
   private:
     TNodoCalendario *pos;
@@ -43,14 +42,9 @@ class TListaPos {
     TListaPos Siguiente();
     bool EsVacia() const;
 
-    friend class TListaCalendario;
-
 };
-#endif
 
 
-#ifndef tlistacalendario_h
-#define tlistacalendario_h
 class TListaCalendario {
 
   private:
@@ -67,12 +61,12 @@ class TListaCalendario {
   bool Insertar(const TCalendario &);
   bool Borrar(const TCalendario &);
   bool Borrar(const TListaPos &);
-  bool EsVacia() const;
+  bool EsVacia();
   TCalendario Obtener(const TListaPos &) const;
   bool Buscar(const TCalendario &) const;
   int Longitud() const;
   TListaPos Primera() const;
-  TListaPos Ultima();
+  TListaPos Ultima() const;
   TListaCalendario SumarSubl(int I_L1, int F_L1, TListaCalendario &L2, int I_L2, int F_L2);
   TListaCalendario ExtraerRango(int n1, int n2);
 
