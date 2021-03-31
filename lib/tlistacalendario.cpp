@@ -123,10 +123,14 @@ TListaCalendario::~TListaCalendario(){
 
 TListaCalendario&
 TListaCalendario::operator=(const TListaCalendario &lc){
-
+  TListaPos prev;
   if(this!=&lc){
     (*this).~TListaCalendario();
-    this->primero = NULL;
+    prev = lc.Primera();
+    for(int i=0; i<lc.Longitud(); i++){
+      Insertar(prev.pos->c);
+      prev = prev.Siguiente();
+    }
   }
 
   return *this;
@@ -182,56 +186,56 @@ TListaCalendario::operator-(const TListaCalendario &lc){
   return lcSuma;
 }
 
-bool TListaCalendario::Insertar(const TCalendario& c) {
-	TListaPos lp;
-  TListaPos ant;
-	TNodoCalendario* aux = new TNodoCalendario();
-	lp=Primera();
-  ant = Primera();
+bool
+TListaCalendario::Insertar(const TCalendario &cal){
+	bool correcto=false;
+	bool encontrado=false;
 
-	if(lp.EsVacia()){
-    //cout<<"Hola"<<endl;
-		aux->c = c;
-    primero = aux;
-		return true;
-	}
+	if(EsVacia()) {
+		TNodoCalendario *nodo=new TNodoCalendario();
+		nodo->c=cal;
+		primero=nodo;
+		correcto=true;
+	} else if(!Buscar(cal)){
+		TListaPos aux;
+		TListaPos prev;
+		aux=Primera();
 
-	if(Buscar(c)){
-		return false;
-	}
-	else{
-
-		while(!lp.EsVacia()){
-			if(lp.pos->c>c){
-				if(lp==Primera()){
-					aux->c=c;
-					aux->siguiente=lp.pos;
-					primero=aux;
-					return true;
-				}
+		while(!encontrado && !aux.EsVacia()) {
+			if(Obtener(aux)>cal) {
+				encontrado=true;
+			} else {
+				prev=aux;
+				aux=aux.Siguiente();
 			}
-			else{
-				if(lp.Siguiente().EsVacia()){
-					aux->c=c;
-					aux->siguiente=lp.pos;
-					this->primero = aux;
-					return true;
-				}
-				else if(lp.Siguiente().pos->c>c){
-					aux->c=c;
-					aux->siguiente=lp.pos->siguiente;
-					ant.pos->siguiente=aux;
-					return true;
-				}
-			}
-			lp=lp.Siguiente();
 		}
-
+		if(encontrado || prev==Ultima()) {
+			if(prev.EsVacia()) {
+				TNodoCalendario *nodo=new TNodoCalendario();
+				nodo->c=cal;
+				nodo->siguiente=aux.pos;
+				primero=nodo;
+				correcto=true;
+			} else if(prev==Ultima()) {
+				TNodoCalendario *nodo=new TNodoCalendario();
+				nodo->c=cal;
+				nodo->siguiente=NULL;
+				prev.pos->siguiente=nodo;
+				correcto=true;
+			} else {
+				TNodoCalendario *nodo=new TNodoCalendario();
+				nodo->c=cal;
+				nodo->siguiente=aux.pos;
+				prev.pos->siguiente=nodo;
+				correcto=true;
+			}
+		}
 	}
-	return true;
+	return correcto;
 }
 
-bool TListaCalendario::Borrar(const TCalendario &cal){
+bool
+TListaCalendario::Borrar(const TCalendario &cal){
   bool correcto=false;
 
   TListaPos prev = Primera();
@@ -268,7 +272,7 @@ TListaCalendario::Borrar(const TListaPos &lp){
 }
 
 bool
-TListaCalendario::EsVacia() {
+TListaCalendario::EsVacia() const {
 	if(primero==NULL){
 		return true;
 	}
