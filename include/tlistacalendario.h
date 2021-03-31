@@ -44,7 +44,6 @@ class TListaPos {
 
 };
 
-
 class TListaCalendario {
 
   private:
@@ -61,7 +60,7 @@ class TListaCalendario {
   bool Insertar(const TCalendario &);
   bool Borrar(const TCalendario &);
   bool Borrar(const TListaPos &);
-  bool EsVacia();
+  bool EsVacia() const;
   TCalendario Obtener(const TListaPos &) const;
   bool Buscar(const TCalendario &) const;
   int Longitud() const;
@@ -74,4 +73,5 @@ class TListaCalendario {
 
 
 };
+
 #endif

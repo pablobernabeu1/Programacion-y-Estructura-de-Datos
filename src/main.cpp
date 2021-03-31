@@ -105,16 +105,16 @@ int main(){
 int
 main(void)
 {
-   TListaCalendario l1;
+   TListaCalendario l1, l2, l3;
+   TCalendario c1;
+   TCalendario c2(1, 1, 2007, (char*) "Fecha2");
 
-   TCalendario c1(14, 12, 1966, (char*) "Fecha Correcta");
-   TCalendario c2(1, 1, 1954, (char*) "Fecha Correcta");
-
-   cout << l1 << endl;
    l1.Insertar(c1);
-   cout << l1 << endl;
-   l1.Insertar(c2);
-   cout << l1 << endl;
+   l2.Insertar(c2);
+   l3 = l1 + l2;
+
+   cout << l3 << endl;
+   //cout << l1 + l2 << endl;
 
    return 0;
 }
