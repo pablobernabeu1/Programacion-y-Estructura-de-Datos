@@ -366,15 +366,41 @@ TListaPos TListaCalendario::Primera() const {
 TListaPos TListaCalendario::Ultima() const{
 	TListaPos lp;
 	lp=Primera();
-	for(int i=1;i<Longitud();i++){//Empiezas en la primera posicion por lo que i se inicializa a 1
+	for(int i=1;i<Longitud();i++){
 		lp=lp.Siguiente();
 	}
 	return lp;
 }
 
 TListaCalendario
-SumarSubl(int I_L1, int F_L1, TListaCalendario &L2, int I_L2, int F_L2){
+TListaCalendario::SumarSubl(int I_L1, int F_L1, TListaCalendario &L2, int I_L2, int F_L2){
   TListaCalendario lcSuma;
+  TListaCalendario primeraLista;
+  TListaCalendario segundaLista;
+
+  // Primera comprobacion
+  if(F_L1>Longitud()){
+    F_L1 = Longitud();
+  }
+  if(F_L2>L2.Longitud()){
+    F_L2 = L2.Longitud();
+  }
+  // Segunda comprobacion
+  if(I_L1<=0){
+    I_L1 = 1;
+  }
+  if(I_L2<=0){
+    I_L2 = 1;
+  }
+  // Tercera comprobacion
+  if(I_L1>F_L1 || I_L2>F_L2){
+    return lcSuma;
+  }
+
+  primeraLista = ExtraerRango(I_L1, F_L1);
+  segundaLista = L2.ExtraerRango(I_L2, F_L2);
+
+  lcSuma = primeraLista + segundaLista;
 
 
   return lcSuma;
