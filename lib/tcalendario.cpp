@@ -137,7 +137,76 @@ TCalendario
 TCalendario::operator++(int n){
   TCalendario temp(*this);
 
-  dia++;
+  switch (mes) {
+    case 2:
+      if(dia==29 && bisiesto(anyo)){
+        mes++;
+        dia=1;
+      }
+      else if(dia==28 && !bisiesto(anyo)){
+        mes++;
+        dia=1;
+      }
+      else{
+        dia++;
+      }
+      break;
+
+    case 4:
+      if(dia==30){
+        mes++;
+        dia=1;
+      }
+      else{
+        dia++;
+      }
+      break;
+
+    case 6:
+      if(dia==30){
+        mes++;
+        dia=1;
+      }
+      else{
+        dia++;
+      }
+      break;
+
+    case 9:
+      if(dia==30){
+        mes++;
+        dia=1;
+      }
+      else{
+        dia++;
+      }
+      break;
+
+    case 11:
+      if(dia==30){
+        mes++;
+        dia=1;
+      }
+      else{
+        dia++;
+      }
+      break;
+    default:
+    if(dia==31){
+      if(mes==12){
+        dia=1;
+        mes=1;
+        anyo++;
+      }
+      else{
+        mes++;
+        dia=1;
+      }
+    }
+    else{
+      dia++;
+    }
+  }
 
   return temp;
 }
@@ -145,7 +214,76 @@ TCalendario::operator++(int n){
 TCalendario&
 TCalendario::operator++(){
 
-  dia++;
+  switch (mes) {
+    case 2:
+      if(dia==29 && bisiesto(anyo)){
+        mes++;
+        dia=1;
+      }
+      else if(dia==28 && !bisiesto(anyo)){
+        mes++;
+        dia=1;
+      }
+      else{
+        dia++;
+      }
+      break;
+
+    case 4:
+      if(dia==30){
+        mes++;
+        dia=1;
+      }
+      else{
+        dia++;
+      }
+      break;
+
+    case 6:
+      if(dia==30){
+        mes++;
+        dia=1;
+      }
+      else{
+        dia++;
+      }
+      break;
+
+    case 9:
+      if(dia==30){
+        mes++;
+        dia=1;
+      }
+      else{
+        dia++;
+      }
+      break;
+
+    case 11:
+      if(dia==30){
+        mes++;
+        dia=1;
+      }
+      else{
+        dia++;
+      }
+      break;
+    default:
+    if(dia==31){
+      if(mes==12){
+        dia=1;
+        mes=1;
+        anyo++;
+      }
+      else{
+        mes++;
+        dia=1;
+      }
+    }
+    else{
+      dia++;
+    }
+  }
 
   return *this;
 }
@@ -183,10 +321,9 @@ bool
 TCalendario::ModFecha(int d, int m, int a){
 
     if(this->comprobarFechaCorrecta(d, m, a)){
-
       this->dia = d;
       this->mes = m;
-      this->anyo = anyo;
+      this->anyo = a;
 
       return true;
     }
@@ -372,4 +509,21 @@ TCalendario::comprobarFechaCorrecta(int dia, int mes, int anyo){   // Función q
     }
   }
   return check;
+}
+
+bool
+TCalendario::bisiesto(int a){
+  if(a%4==0){
+    if(a%100==0){
+      if(a%400==0){
+        return true;
+        return false;
+      }
+      return false;
+    }
+    return false;
+  }
+  else{
+    return false;
+  }
 }

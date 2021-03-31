@@ -60,6 +60,7 @@ class TListaCalendario {
   bool Insertar(const TCalendario &);
   bool Borrar(const TCalendario &);
   bool Borrar(const TListaPos &);
+  bool Borrar(int, int, int);
   bool EsVacia() const;
   TCalendario Obtener(const TListaPos &) const;
   bool Buscar(const TCalendario &) const;

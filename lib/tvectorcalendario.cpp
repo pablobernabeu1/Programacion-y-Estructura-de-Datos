@@ -88,15 +88,7 @@ TVectorCalendario::operator==(const TVectorCalendario &vc){
 bool
 TVectorCalendario::operator!=(const TVectorCalendario &vc){
 
-  if(this->tamano == vc.tamano){
-    for(int i=0; i<=this->tamano; i++){
-      if(this->c[i] != vc.c[i]){
-        return true;
-      }
-    }
-    return false;
-  }
-  return true;
+  return !(*this==vc);
 
 }
 

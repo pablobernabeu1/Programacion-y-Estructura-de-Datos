@@ -14,6 +14,7 @@ class TCalendario {
         void Copia(const TCalendario &);
         void fechaPorDefecto(TCalendario &);
         bool comprobarFechaCorrecta(int, int, int);
+        bool bisiesto(int);
 
     public:
         TCalendario();
