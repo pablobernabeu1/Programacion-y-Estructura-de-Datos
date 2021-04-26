@@ -23,18 +23,23 @@ main(void)
 
 
   TListaCalendario lista;
-  TListaCalendario lista2;
-  TListaCalendario lista3;
   TListaPos p;
 
   lista.Insertar(a);
   lista.Insertar(b);
   lista.Insertar(c);
-  lista2.Insertar(c);
-  lista2.Insertar(d);
+  lista.Insertar(d);
+  lista.Insertar(e);
+  lista.Insertar(f);
+  lista.Insertar(g);
+  lista.Insertar(h);
+  lista.Insertar(i);
+  lista.Insertar(j);
 
-  lista3=lista-lista2;
-  
-  cout<<lista3<<endl;
+  lista.Borrar(14,10,2006);
+
+  p=lista.Primera();  
+
+  cout<<lista.Obtener(p)<<endl;
 
 }

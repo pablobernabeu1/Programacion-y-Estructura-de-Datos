@@ -341,13 +341,23 @@ TCalendario::ModMensaje(char *mens){
     return true;
 }
 
-bool
-TCalendario::operator==(const TCalendario &c){
-  bool temp;
-
-  temp = ((this->dia == c.dia) && (this->mes == c.mes) && (this->anyo == c.anyo) && strcmp(this->mensaje, c.mensaje)==0);
-
-  return temp;
+bool 
+TCalendario::operator ==(const TCalendario& c) {
+  if(this->dia==c.dia && this->mes==c.mes && this->anyo==c.anyo){
+    if(this->mensaje==NULL && c.mensaje==NULL){
+      return true;
+    }
+    else if(this->mensaje==NULL || c.mensaje==NULL){
+      return false;
+    }
+    else if(strcmp(this->mensaje, c.mensaje)==0){
+      return true;
+    }
+    else
+      return false;
+  }
+  else
+    return false;
 }
 
 bool
@@ -355,56 +365,102 @@ TCalendario::operator!=(const TCalendario &c){
   return !(*this == c);
 }
 
-bool
-TCalendario::operator>(const TCalendario &c){
-  if(this->anyo>c.anyo){
-    return true;
-  }
-  else if(this->anyo==c.anyo){
-
-    if(this->mes>c.mes){
+bool 
+TCalendario::operator >(const TCalendario& c) {
+  if(anyo>c.anyo){
       return true;
-    }
-    else if(this->mes==c.mes){
-
-      if(this->dia>c.dia){
-        return true;
+  }
+  else{
+    if(anyo==c.anyo){
+      if(mes>c.mes){
+          return true;
       }
-      else if(this->dia==c.dia){
-        if(this->mensaje==NULL && c.mensaje==NULL){
-          return false;
-        }
-        else if(this->mensaje==NULL || c.mensaje==NULL){
-          return false;
-        }
-        else{
-          if(strcmp(this->mensaje, c.mensaje)==0){
-            return false;
-          }
-          else if(strcmp(this->mensaje, c.mensaje)>0){
+      else{
+        if(mes==c.mes){
+          if(dia>c.dia){
             return true;
           }
           else{
+            if(dia==c.dia){
+              if(mensaje==NULL && c.mensaje==NULL){//NULL>NULL-->FALSE
+                return false;
+              }
+              else if(mensaje==NULL){//NULL>X-->FALSE
+                return false;
+              }
+              else if(c.mensaje==NULL){//X>NULL-->TRUE
+                return true;
+              }
+              else{
+                if(strcmp(mensaje, c.mensaje)==0){//X>X-->FALSE
+                  return false;
+                }
+                else if(strcmp(mensaje, c.mensaje)>0){//X>Y-->TRUE
+                  return true;
+                }
+                else{//Y>X-->FALSE
+                  return false;
+                }
+
+              }
+            }
             return false;
           }
         }
-      }
-      else{
-        return false;
-      }
-    }
-    else{
       return false;
+      }
     }
-  }
-  else{
     return false;
   }
 }
 
-bool
-TCalendario::operator<(const TCalendario &c){
-  return !(*this > c);
+bool 
+TCalendario::operator <(const TCalendario& c) {
+  if(anyo<c.anyo){
+        return true;
+    }
+    else{
+      if(anyo==c.anyo){
+        if(mes<c.mes){
+            return true;
+        }
+        else{
+          if(mes==c.mes){
+            if(dia<c.dia){
+              return true;
+            }
+            else{
+              if(dia==c.dia){
+                if(mensaje==NULL && c.mensaje==NULL){//NULL<NULL-->FALSE
+                  return false;
+                }
+                else if(mensaje==NULL){//NULL<X-->TRUE
+                  return true;
+                }
+                else if(c.mensaje==NULL){//X<NULL-->FALSE
+                  return false;
+                }
+                else{
+                  if(strcmp(mensaje, c.mensaje)==0){//X<X-->FALSE
+                    return false;
+                  }
+                  else if(strcmp(mensaje, c.mensaje)<0){//X<Y-->TRUE
+                    return true;
+                  }
+                  else{//Y<X-->FALSE
+                    return false;
+                  }
+
+                }
+              }
+              return false;
+            }
+          }
+          return false;
+        }
+      }
+      return false;
+    }
 }
 
 bool

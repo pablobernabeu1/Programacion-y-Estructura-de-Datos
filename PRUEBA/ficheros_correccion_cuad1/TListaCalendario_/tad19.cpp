@@ -29,11 +29,10 @@ main(void)
 
   lista.Insertar(a);
   lista.Insertar(b);
-  lista.Insertar(c);
   lista2.Insertar(c);
   lista2.Insertar(d);
 
-  lista3=lista-lista2;
+  lista3=lista+lista2;
   
   cout<<lista3<<endl;
 

@@ -25,15 +25,20 @@ main(void)
   TListaCalendario lista;
   TListaCalendario lista2;
   TListaCalendario lista3;
-  TListaPos p;
 
   lista.Insertar(a);
   lista.Insertar(b);
   lista.Insertar(c);
-  lista2.Insertar(c);
-  lista2.Insertar(d);
+  lista.Insertar(d);
+  lista.Insertar(e);
 
-  lista3=lista-lista2;
+  lista2.Insertar(f);
+  lista2.Insertar(g);
+  lista2.Insertar(h);
+  lista2.Insertar(i);
+  lista2.Insertar(j);
+
+  lista3=lista.SumarSubl(4,2,lista2,0,1);
   
   cout<<lista3<<endl;
 
