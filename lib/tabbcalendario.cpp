@@ -1,5 +1,9 @@
 #include "tabbcalendario.h"
 
+
+// Métodos para TNodoABB
+
+
 TNodoABB::TNodoABB():item(), iz(), de(){
 }
 
@@ -21,6 +25,12 @@ TNodoABB::operator=(const TNodoABB &tn){
 	return *this;
 }
 
+
+
+// Métodos para TABBCalendario
+
+
+
 TABBCalendario::TABBCalendario(){
 	raiz=NULL;
 }
@@ -30,18 +40,6 @@ TABBCalendario::TABBCalendario(const TABBCalendario &tabb){
 	copiar(tabb);
 }
 
-
-
-void 
-TABBCalendario::copiar(const TABBCalendario &tabb){
-	TNodoABB* tn = new TNodoABB();
-	if(tabb.raiz!=NULL){
-		tn->item=tabb.raiz->item;
-		raiz=tn;
-		raiz->de.copiar(tabb.raiz->de);
-		raiz->iz.copiar(tabb.raiz->iz);
-	}
-}
 
 TABBCalendario::~TABBCalendario(){
 	if(raiz!=NULL){
@@ -126,4 +124,91 @@ TABBCalendario::Raiz(){
 		c=raiz->item;
 	}
 	return c;
+}
+
+int 
+TABBCalendario::Altura(){
+	
+	if(!EsVacio()){
+		return max(raiz->iz.Altura(), raiz->de.Altura()) + 1;
+	}
+
+	return 0;
+}
+
+int 
+TABBCalendario::Nodos(){
+	if(!EsVacio()){
+		return (raiz->de.Nodos() + raiz->iz.Nodos()) + 1; 
+	}
+
+	return 0;
+}
+
+int 
+TABBCalendario::NodosHoja(){
+	if(EsVacio()){
+		return 0;
+	}
+	else{
+		if(raiz->de.EsVacio() && raiz->iz.EsVacio()){
+			return 1;
+		}
+		else{
+			return raiz->iz.NodosHoja() + raiz->de.NodosHoja();
+		}
+	}
+}
+
+TVectorCalendario 
+TABBCalendario::Inorden(){
+	TVectorCalendario vc(Nodos());
+	int pos=1;
+	//InordenAux(vc, pos);
+
+	return vc;
+}
+
+TVectorCalendario 
+TABBCalendario::Preorden(){
+	TVectorCalendario vc(Nodos());
+	int pos=1;
+	//PreordenAux(vc, pos);
+
+	return vc;
+}
+
+TVectorCalendario 
+TABBCalendario::Postorden(){
+	TVectorCalendario vc(Nodos());
+	int pos=1;
+	//PostordenAux(vc, pos);
+
+	return vc;
+}
+
+TVectorCalendario 
+TABBCalendario::Niveles(){
+	TVectorCalendario vc(Nodos());
+	TABBCalendario temp(*this);
+	TABBCalendario* aux;
+	queue<TABBCalendario*> cola;
+
+
+	return vc;
+}
+
+
+
+// Métodos auxiliares
+
+void 
+TABBCalendario::copiar(const TABBCalendario &tabb){
+	TNodoABB* tn = new TNodoABB();
+	if(tabb.raiz!=NULL){
+		tn->item=tabb.raiz->item;
+		raiz=tn;
+		raiz->de.copiar(tabb.raiz->de);
+		raiz->iz.copiar(tabb.raiz->iz);
+	}
 }
