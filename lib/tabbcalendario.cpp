@@ -36,8 +36,12 @@ TABBCalendario::TABBCalendario(){
 }
 
 TABBCalendario::TABBCalendario(const TABBCalendario &tabb){
-	raiz=NULL;
-	copiar(tabb);
+	if(tabb.raiz!=NULL && this!=&tabb){
+		copiar(tabb);
+	}
+	else{
+		raiz=NULL;
+	}
 }
 
 
@@ -46,14 +50,11 @@ TABBCalendario::~TABBCalendario(){
 		delete raiz;
 		raiz=NULL;
 	}
-	else{
-		raiz=NULL;
-	}
 }
 
 TABBCalendario& 
 TABBCalendario::operator=(const TABBCalendario &tabb){
-	if(this!=&tabb){
+	if(this!=&tabb && tabb.raiz!=NULL){
 		(*this).~TABBCalendario();
 		copiar(tabb);
 	}
@@ -63,20 +64,17 @@ TABBCalendario::operator=(const TABBCalendario &tabb){
 bool
 TABBCalendario::operator==(const TABBCalendario &tabb){
 	TABBCalendario tb(tabb);
-	/*
+	
 	if(Inorden()==tb.Inorden()){
 		return true;
 	}
-	*/
+	
 	return false;
 }
 
 bool
-TABBCalendario::EsVacio(){
-	if(raiz!=NULL){
-		return false;
-	}
-	return true;
+TABBCalendario::EsVacio() const {
+	return (raiz==NULL);
 }
 
 bool 
@@ -102,23 +100,26 @@ TABBCalendario::Borrar(TCalendario &c){
 }
 
 bool 
-TABBCalendario::Buscar(TCalendario &c){
+TABBCalendario::Buscar(TCalendario &c) const {
+
+	bool found=false;
+
 	if(raiz==NULL){
-		return false;
+		found = false;
 	}
 	else if(c<raiz->item){
-		return raiz->iz.Buscar(c);
+		found = raiz->iz.Buscar(c);
 	}
 	else if(c>raiz->item){
-		return raiz->de.Buscar(c);
+		found = raiz->de.Buscar(c);
 	}
-	else return true;
+	else found = true;
 
-	return false;
+	return found;
 }
 
 TCalendario 
-TABBCalendario::Raiz(){
+TABBCalendario::Raiz() const {
 	TCalendario c;
 	if(EsVacio()){
 		c=raiz->item;
@@ -137,7 +138,7 @@ TABBCalendario::Altura(){
 }
 
 int 
-TABBCalendario::Nodos(){
+TABBCalendario::Nodos() const {
 	if(!EsVacio()){
 		return (raiz->de.Nodos() + raiz->iz.Nodos()) + 1; 
 	}
@@ -161,28 +162,28 @@ TABBCalendario::NodosHoja(){
 }
 
 TVectorCalendario 
-TABBCalendario::Inorden(){
+TABBCalendario::Inorden() const {
 	TVectorCalendario vc(Nodos());
 	int pos=1;
-	//InordenAux(vc, pos);
+	InordenAux(vc, pos);
 
 	return vc;
 }
 
 TVectorCalendario 
-TABBCalendario::Preorden(){
+TABBCalendario::Preorden() const {
 	TVectorCalendario vc(Nodos());
 	int pos=1;
-	//PreordenAux(vc, pos);
+	PreordenAux(vc, pos);
 
 	return vc;
 }
 
 TVectorCalendario 
-TABBCalendario::Postorden(){
+TABBCalendario::Postorden() const {
 	TVectorCalendario vc(Nodos());
 	int pos=1;
-	//PostordenAux(vc, pos);
+	PostordenAux(vc, pos);
 
 	return vc;
 }
@@ -194,13 +195,87 @@ TABBCalendario::Niveles(){
 	TABBCalendario* aux;
 	queue<TABBCalendario*> cola;
 
+	int i=1;
+	if(temp.EsVacio()){
+		cola.push(&temp);
+		vc[i]=aux->raiz->item;
+		i++;
+		cola.pop();
+		if(!aux->raiz->iz.EsVacio()){
+			cola.push(&(aux->raiz->iz));
+		}
+		if(!aux->raiz->de.EsVacio()){
+			cola.push(&(aux->raiz->de));
+		}
+	}
+
 
 	return vc;
 }
 
+ostream & operator<<(ostream &os, const TABBCalendario &tabb){
+	os<<tabb.Inorden();
 
+	return os;
+}
+
+TABBCalendario 
+TABBCalendario::operator+(const TABBCalendario &tabb){
+	TABBCalendario tabbAux(*this);
+	TVectorCalendario vc = tabb.Inorden();
+
+	for(int i=1; i<=vc.Tamano(); i++){
+		tabbAux.Insertar(vc[i]);
+	}
+
+	return tabbAux;
+}
+
+TABBCalendario 
+TABBCalendario::operator-(const TABBCalendario &tabb){
+	TABBCalendario tabbAux(*this);
+	TVectorCalendario vc = tabb.Inorden();
+
+	for(int i=1; i<=vc.Tamano(); i++){
+		if(!tabb.Buscar(vc[i])){
+			tabbAux.Insertar(vc[i]);
+		}
+	}
+
+	return tabbAux;
+}
 
 // Métodos auxiliares
+
+void 
+TABBCalendario::InordenAux(const TVectorCalendario &vc, int &p) const {
+	if(raiz!=NULL){
+		vc[p]=Raiz();
+		raiz->iz.InordenAux(vc, p);
+		p++;
+		raiz->de.InordenAux(vc, p);
+	}
+}
+
+void 
+TABBCalendario::PreordenAux(const TVectorCalendario &vc, int &p) const {
+	if(raiz!=NULL){
+		vc[p]=Raiz();
+		p++;
+		raiz->iz.InordenAux(vc, p);
+		raiz->de.InordenAux(vc, p);
+	}
+}
+
+void 
+TABBCalendario::PostordenAux(const TVectorCalendario &vc, int &p) const {
+	if(raiz!=NULL){
+		vc[p]=Raiz();
+		raiz->iz.InordenAux(vc, p);
+		raiz->de.InordenAux(vc, p);
+		p++;
+	}
+}
 
 void 
 TABBCalendario::copiar(const TABBCalendario &tabb){

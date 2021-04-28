@@ -19,28 +19,27 @@ class TABBCalendario {
 		~TABBCalendario();
 		TABBCalendario & operator=(const TABBCalendario &);
 		bool operator==(const TABBCalendario &);
-		bool EsVacio();
+		bool EsVacio() const;
 		bool Insertar(TCalendario &);
-		bool Borrar(TCalendario &);
-		bool Buscar(TCalendario &);
-		TCalendario Raiz();
+		bool Borrar(TCalendario &); // *
+		bool Buscar(TCalendario &) const;
+		TCalendario Raiz() const;
 		int Altura();
-		int Nodos();
+		int Nodos() const;
 		int NodosHoja();
-		TVectorCalendario Inorden();
-		TVectorCalendario Preorden();
-		TVectorCalendario Postorden();
-		TVectorCalendario Niveles();
-		friend ostream & operator<<(ostream &,	 const TABBCalendario &);
+		TVectorCalendario Inorden() const;
+		TVectorCalendario Preorden() const;
+		TVectorCalendario Postorden() const;
+		TVectorCalendario Niveles(); 
+		friend ostream & operator<<(ostream &, const TABBCalendario &);
 		TABBCalendario operator+(const TABBCalendario &);
 		TABBCalendario operator-(const TABBCalendario &);
 
 	private:
 		TNodoABB *raiz;
-		TABBCalendario* MayorArbol();
-		void InordenAux(const TABBCalendario &, int &);
-		void PreordenAux(const TABBCalendario &, int &);
-		void PostordenAux(const TABBCalendario &, int &);
+		void InordenAux(const TVectorCalendario &, int &) const;
+		void PreordenAux(const TVectorCalendario &, int &) const;
+		void PostordenAux(const TVectorCalendario &, int &) const;
 		void copiar(const TABBCalendario &);
 };
 
