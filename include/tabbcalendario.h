@@ -32,14 +32,14 @@ class TABBCalendario {
 		TVectorCalendario Postorden() const;
 		TVectorCalendario Niveles(); 
 		friend ostream & operator<<(ostream &, const TABBCalendario &);
-		TABBCalendario operator+(const TABBCalendario &);
-		TABBCalendario operator-(const TABBCalendario &);
+		TABBCalendario operator+(TABBCalendario &);
+		TABBCalendario operator-(TABBCalendario &);
 
 	private:
 		TNodoABB *raiz;
-		void InordenAux(const TVectorCalendario &, int &) const;
-		void PreordenAux(const TVectorCalendario &, int &) const;
-		void PostordenAux(const TVectorCalendario &, int &) const;
+		void InordenAux(TVectorCalendario &, int &) const;
+		void PreordenAux(TVectorCalendario &, int &) const;
+		void PostordenAux(TVectorCalendario &, int &) const;
 		void copiar(const TABBCalendario &);
 };
 
