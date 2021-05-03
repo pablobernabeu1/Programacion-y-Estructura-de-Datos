@@ -98,7 +98,55 @@ TABBCalendario::Insertar(TCalendario &tcal){
 
 bool
 TABBCalendario::Borrar(TCalendario &c){
-	return false;
+	TCalendario mayorIz;
+	TNodoABB *aux;
+	bool deleted=false;
+
+	if(!raiz){
+		deleted = false;
+	}
+	else{
+		if(raiz->item == c){
+			deleted = true;
+
+			if(raiz->iz.EsVacio() && raiz->de.EsVacio()){
+				delete raiz;
+				raiz=NULL;
+			}
+			else{
+				if(!raiz->iz.EsVacio() && !raiz->de.EsVacio()){
+					mayorIz = raiz->iz.BuscarMayor();
+					raiz->item = mayorIz;
+					raiz->iz.Borrar(mayorIz);
+				}
+				else{
+					aux = raiz;
+
+					if(raiz->iz.EsVacio()){
+						raiz = raiz->de.raiz;
+						aux->de.raiz = NULL;
+					}
+					else{
+						raiz = raiz->iz.raiz;
+						aux->iz.raiz = NULL;
+					}
+
+					delete aux;
+				}
+			}
+		}
+		else{
+			if(c>raiz->item){
+				deleted = raiz->de.Borrar(c);
+			}
+			else{		
+				deleted = raiz->iz.Borrar(c);
+			}
+		}
+	}
+
+	return deleted;
+
 }
 
 bool 
@@ -232,7 +280,7 @@ TABBCalendario::operator+(TABBCalendario &tabb){
 	TABBCalendario tabbAux(*this);
 	TVectorCalendario vc = tabb.Inorden();
 
-	for(int i=1; i<=vc.Tamano(); i++){
+	for(int i=0; i<vc.Tamano(); i++){
 		tabbAux.Insertar(vc[i]);
 	}
 
@@ -282,6 +330,22 @@ TABBCalendario::PostordenAux(TVectorCalendario &vc, int &pos) const{
 		vc[pos]=Raiz();
 		pos++;
 	}
+}
+
+TCalendario
+TABBCalendario::BuscarMayor() const {
+	TCalendario aux;
+
+	if(raiz){
+		if(!raiz->de.raiz){
+			aux = raiz->item;
+		}
+		else{
+			aux = raiz->de.BuscarMayor();
+		}
+	}
+
+	return aux;
 }
 
 void 

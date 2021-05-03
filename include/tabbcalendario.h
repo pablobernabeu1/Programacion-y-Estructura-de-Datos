@@ -41,6 +41,7 @@ class TABBCalendario {
 		void PreordenAux(TVectorCalendario &, int &) const;
 		void PostordenAux(TVectorCalendario &, int &) const;
 		void copiar(const TABBCalendario &);
+		TCalendario BuscarMayor() const;
 };
 
 
