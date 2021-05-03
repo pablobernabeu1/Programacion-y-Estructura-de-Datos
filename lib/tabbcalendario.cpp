@@ -280,7 +280,7 @@ TABBCalendario::operator+(TABBCalendario &tabb){
 	TABBCalendario tabbAux(*this);
 	TVectorCalendario vc = tabb.Inorden();
 
-	for(int i=0; i<vc.Tamano(); i++){
+	for(int i=1; i<=vc.Tamano(); i++){
 		tabbAux.Insertar(vc[i]);
 	}
 
