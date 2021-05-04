@@ -4,6 +4,9 @@
 
 using namespace std;
 
+#ifndef TVECTORCALENDARIO_H_
+#define TVECTORCALENDARIO_H_
+
 class TVectorCalendario {
 
   private:
@@ -32,3 +35,5 @@ class TVectorCalendario {
     friend ostream & operator<<(ostream &, const TVectorCalendario &);
 
 };
+
+#endif

@@ -1,42 +1,40 @@
 #include <iostream>
 #include "tabbcalendario.h"
-
+#include "tcalendario.h"
+#include "tvectorcalendario.h"
 using namespace std;
 
 int
 main(void)
 {
-  //Comprobar borrar hoja
-  
-  TABBCalendario a,b,c;
-  TCalendario c7(7, 7,2000,(char *)"fecha"),c4(4,4,2000,(char *)"fecha"),c10(10,10,2000,(char *)"fecha");
-  TCalendario c2(2,2,2000,(char *)"fecha"),c5(5,5,2000,(char *)"fecha"),c8(8,8,2000,(char *)"fecha"),c9(9,9,2000,(char *)"fecha");
-  TCalendario c3(3,3,2000,(char *)"fecha"),c1(1,1,2000,(char *)"fecha"),c12(12,12,2000,(char *)"fecha"),c6(6,6,2000,(char *)"fecha");
-  
-  
-  a.Insertar(c7);
-  a.Insertar(c4);
-  a.Insertar(c10);
-  a.Insertar(c2);
-  a.Insertar(c5);
-  a.Insertar(c8);
-  a.Insertar(c9);
-  
-  b.Insertar(c4);
-  b.Insertar(c1);
-  b.Insertar(c6);
-  b.Insertar(c12);
-  b.Insertar(c3);
-  c=b;
+/************************************************/
+/***************** INORDEN, PREORDEN, POSTORDEN */
+/************************************************/
 
-  cout<<"Preorden="<<b.Preorden()<<endl;
-  cout<<"Preorden="<<c.Preorden()<<endl;
-  
-  c=a+b;
-  
-  cout<<"Preorden="<<c.Preorden()<<endl;
-  cout<<"Preorden="<<b.Preorden()<<endl;
-  cout<<"Preorden="<<a.Preorden()<<endl;
-  
-  return 0;
+
+TABBCalendario a;
+TVectorCalendario vec1, vec2, vec3;
+
+TCalendario c1(1,1,2011,(char*) "Fecha1");
+TCalendario c2(2,1,2011,(char*) "Fecha2");
+TCalendario c3(3,1,2011,(char*) "Fecha3");
+TCalendario c4(4,1,2011,(char*) "Fecha4");
+TCalendario c5(5,1,2011,(char*) "Fecha5");
+TCalendario c6(6,1,2011,(char*) "Fecha6");
+
+a.Insertar(c5);
+a.Insertar(c2);
+a.Insertar(c1);
+a.Insertar(c3);
+a.Insertar(c6);
+
+vec1 = a.Inorden();
+vec2 = a.Preorden();
+vec3 = a.Postorden();
+
+cout << "Inorden: " << vec1 << endl;
+cout << "Preorden: " << vec2 << endl;
+cout << "Postorden: " << vec3 << endl;
+
+return 0; 
 }
