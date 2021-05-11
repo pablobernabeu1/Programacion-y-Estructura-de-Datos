@@ -21,6 +21,18 @@ private:
 	void PreordenAux(TVectorCalendario &, int &) const;
 	void PostordenAux(TVectorCalendario &, int &) const;
 	void copiar(const TAVLCalendario &);
+	bool EquilibrarIzquierda();
+	//Equilibra el arbol por la derecha
+	bool EquilibrarDerecha();
+	//Reequilbra los factores de equilibrio
+	void reequilibrarFE();
+	void Mover(TAVLCalendario&,TAVLCalendario&);
+	// Mueve el arbol al que apunta el puntero al arbol
+	void Mover(TAVLCalendario&,TAVLCalendario*&);
+	// Mueve el arbol a la posición donde apunta el puntero
+	void Mover(TAVLCalendario*&,TAVLCalendario&);
+	// Mueve el arbol al que apunta el arbol de la derecha al puntero que apunta el árbol de la izquierda
+	void Mover(TAVLCalendario*&,TAVLCalendario*&);
 
 public:
 	TAVLCalendario();
@@ -31,9 +43,9 @@ public:
 	bool operator==(const TAVLCalendario &) const;
 	bool operator!=(const TAVLCalendario &) const;
 	bool EsVacio() const;
-	bool Insertar(TCalendario &);
+	bool Insertar(const TCalendario &);
 	bool Borrar(const TCalendario &);
-	bool Buscar(TCalendario &) const;
+	bool Buscar(const TCalendario &);
 	TCalendario Raiz() const;
 	int Altura() const;
 	int Nodos() const;
