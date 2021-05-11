@@ -22,17 +22,13 @@ private:
 	void PostordenAux(TVectorCalendario &, int &) const;
 	void copiar(const TAVLCalendario &);
 	bool EquilibrarIzquierda();
-	//Equilibra el arbol por la derecha
 	bool EquilibrarDerecha();
-	//Reequilbra los factores de equilibrio
 	void reequilibrarFE();
 	void Mover(TAVLCalendario&,TAVLCalendario&);
-	// Mueve el arbol al que apunta el puntero al arbol
 	void Mover(TAVLCalendario&,TAVLCalendario*&);
-	// Mueve el arbol a la posición donde apunta el puntero
 	void Mover(TAVLCalendario*&,TAVLCalendario&);
-	// Mueve el arbol al que apunta el arbol de la derecha al puntero que apunta el árbol de la izquierda
 	void Mover(TAVLCalendario*&,TAVLCalendario*&);
+	TAVLCalendario* arbolMayor();
 
 public:
 	TAVLCalendario();

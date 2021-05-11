@@ -133,8 +133,44 @@ TAVLCalendario::Insertar(const TCalendario& c) {
 }
 
 bool 
-TAVLCalendario::Borrar(const TCalendario &){
-	return false;
+TAVLCalendario::Borrar(const TCalendario &cal){
+	TAVLCalendario tavl(*this);
+
+	if(!Buscar(cal)){
+		return false;
+	}else{
+		if(Raiz() == cal){
+			if(raiz->de.EsVacio() && raiz->de.EsVacio()){
+				raiz = NULL;
+				return true;
+			}
+			else if(!raiz->iz.EsVacio() && !raiz->de.EsVacio()){
+				if(tavl.raiz->iz.arbolMayor()->raiz->iz.EsVacio()){
+					raiz->item=raiz->iz.arbolMayor()->Raiz();
+					raiz->iz.arbolMayor()->~TAVLCalendario();
+				}
+				else{
+					raiz->item = raiz->iz.arbolMayor()->Raiz();
+				}
+			}
+			else if(!raiz->iz.EsVacio()) {
+				raiz = raiz->iz.raiz;
+			}
+			else {
+				raiz = raiz->de.raiz;
+			}
+		}
+		else if(Raiz()>cal){
+			raiz->iz.Borrar(cal);
+		}
+		else {
+			raiz->de.Borrar(cal);
+		}
+		reequilibrarFE();
+		return true;
+		
+	}
+
 }
 
 bool 
@@ -230,7 +266,8 @@ TAVLCalendario::Postorden() const {
 	return vc;
 }
 
-ostream & operator<<(ostream &os, const TAVLCalendario &tavl){
+ostream & 
+operator<<(ostream &os, const TAVLCalendario &tavl){
 	os<<tavl.Inorden();
 	return os;
 }
@@ -398,26 +435,43 @@ TAVLCalendario::reequilibrarFE() {
 }
 
 void 
-TAVLCalendario::Mover(TAVLCalendario& avlci,TAVLCalendario& avlcd) {
-	avlci.~TAVLCalendario();
-	avlci.raiz=avlcd.raiz;
-	avlcd.raiz=NULL;
+TAVLCalendario::Mover(TAVLCalendario& tavl1,TAVLCalendario& tavl2) {
+	tavl1.~TAVLCalendario();
+	tavl1.raiz=tavl2.raiz;
+	tavl2.raiz=NULL;
 }
 
 void 
-TAVLCalendario::Mover(TAVLCalendario& avlc, TAVLCalendario*& avlcp) {
-	avlc.~TAVLCalendario();
-	avlc.raiz=avlcp->raiz;
-	avlcp->raiz=NULL;
+TAVLCalendario::Mover(TAVLCalendario& tavl1, TAVLCalendario*& tavl2) {
+	tavl1.~TAVLCalendario();
+	tavl1.raiz=tavl2->raiz;
+	tavl2->raiz=NULL;
 }
 
 void 
-TAVLCalendario::Mover(TAVLCalendario*& avlcp, TAVLCalendario& avlc) {
-	avlcp->raiz=avlc.raiz;
+TAVLCalendario::Mover(TAVLCalendario*& tavl1, TAVLCalendario& tavl2) {
+	tavl1->raiz=tavl2.raiz;
 }
 
 void 
-TAVLCalendario::Mover(TAVLCalendario*& avlcpi, TAVLCalendario*& avlcpd) {
-	avlcpi->raiz=avlcpd->raiz;
-	avlcpd->raiz=NULL;
+TAVLCalendario::Mover(TAVLCalendario*& tavl1, TAVLCalendario*& tavl2) {
+	tavl1->raiz=tavl2->raiz;
+	tavl2->raiz=NULL;
+}
+
+TAVLCalendario*
+TAVLCalendario::arbolMayor() {
+	TAVLCalendario *tavl = new TAVLCalendario(*this);
+	if(!raiz->de.EsVacio()){
+		return raiz->de.arbolMayor();
+	}
+	else{
+		if(!raiz->iz.EsVacio()){
+			raiz = raiz->iz.raiz;
+			return tavl;
+		}
+		else {
+			return this;
+		}
+	}
 }
