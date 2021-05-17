@@ -173,18 +173,29 @@ TListaCalendario::operator+(const TListaCalendario &lc){
   return lcSuma;
 }
 
-TListaCalendario
-TListaCalendario::operator-(const TListaCalendario &lc){
+TListaCalendario 
+TListaCalendario::operator-(const TListaCalendario &l){
+    TListaCalendario listaCalendario;
+    TListaPos p,q;
+    TNodoCalendario nodo;
+    bool aux = false;
 
-  TListaCalendario lcSuma(*this);
-  TListaPos lp;
+    p = Primera();
+    for(int i = 0; i < Longitud(); i++){
+        q = l.Primera();
+        for(int j = 0; j < l.Longitud(); j++){
+            if(p.pos->c == q.pos->c){
+                aux = true;
+            }
+        }
+        if(!aux){
+            listaCalendario.Insertar(p.pos->c);
+        }
+        aux = false;
+        p = p.Siguiente();
+    }
 
-  while(!lp.EsVacia()){
-    lcSuma.Borrar(Obtener(lp));
-    lp = lp.Siguiente();
-  }
-
-  return lcSuma;
+    return listaCalendario;
 }
 
 bool
@@ -271,41 +282,38 @@ TListaCalendario::Borrar(const TListaPos &lp){
   return Borrar(Obtener(lp));
 }
 
-bool
-TListaCalendario::Borrar(int d, int m, int a){
-  TCalendario c(d, m, a, (char *)"");
-  bool exit=false;
+bool 
+TListaCalendario::Borrar(int dia, int mes, int anyo) {
+	TListaPos lp;
+	lp=Primera();
+	if(anyo<primero->c.Anyo()){
+		return false;
+	}
+	else{
+		if(mes<primero->c.Mes()){
+			return false;
+		}
+		else{
+			if(dia<primero->c.Dia()){
+				return false;
+			}
+			else{
+				for(int i=0;i<Longitud();i++){
+					if((lp.pos->c.Anyo()<anyo) || (lp.pos->c.Anyo()==anyo && lp.pos->c.Mes()<mes)
+						|| (lp.pos->c.Anyo()==anyo && lp.pos->c.Mes()==mes && lp.pos->c.Dia()<dia)){
 
-  TListaPos lp;
-  lp.pos=primero;
-  TListaPos ant;
-
-  if(!EsVacia()){
-    if(c>primero->c){
-      primero = primero->siguiente;
-      delete lp.pos;
-      return true;
-    }
-    else{
-      ant = lp;
-      lp = lp.Siguiente();
-
-      while(lp.pos!=NULL){
-        if(c>lp.pos->c && exit==false){
-          ant.pos->siguiente = lp.pos->siguiente;
-          delete lp.pos;
-          ant = lp;
-          lp.pos = lp.pos->siguiente;
-          return true;
-        }
-        else{
-          exit=true;
-        }
-      }
-    }
-  }
-
-  return false;
+						Borrar(lp.pos->c);
+						i=0;
+						lp=Primera();
+					}
+					else{
+						lp=lp.Siguiente();
+					}
+				}
+				return true;
+			}
+		}
+	}
 }
 
 bool
@@ -357,13 +365,15 @@ TListaCalendario::Longitud() const {
   return longitud;
 }
 
-TListaPos TListaCalendario::Primera() const {
+TListaPos 
+TListaCalendario::Primera() const {
 	TListaPos lp;
 	lp.pos=primero;
 	return lp;
 }
 
-TListaPos TListaCalendario::Ultima() const{
+TListaPos 
+TListaCalendario::Ultima() const{
 	TListaPos lp;
 	lp=Primera();
 	for(int i=1;i<Longitud();i++){
@@ -372,68 +382,109 @@ TListaPos TListaCalendario::Ultima() const{
 	return lp;
 }
 
-TListaCalendario
-TListaCalendario::SumarSubl(int I_L1, int F_L1, TListaCalendario &L2, int I_L2, int F_L2){
-  TListaCalendario lcSuma;
-  TListaCalendario primeraLista;
-  TListaCalendario segundaLista;
-
-  // Primera comprobacion
-  if(F_L1>Longitud()){
-    F_L1 = Longitud();
-  }
-  if(F_L2>L2.Longitud()){
-    F_L2 = L2.Longitud();
-  }
-  // Segunda comprobacion
-  if(I_L1<=0){
-    I_L1 = 1;
-  }
-  if(I_L2<=0){
-    I_L2 = 1;
-  }
-  // Tercera comprobacion
-  if(I_L1>F_L1 || I_L2>F_L2){
-    return lcSuma;
-  }
-
-  primeraLista = ExtraerRango(I_L1, F_L1);
-  segundaLista = L2.ExtraerRango(I_L2, F_L2);
-
-  lcSuma = primeraLista + segundaLista;
-
-
-  return lcSuma;
+TListaCalendario 
+TListaCalendario::SumarSubl(int I_L1, int F_L1, TListaCalendario& L2, int I_L2, int F_L2) {
+	TListaCalendario nuevaL1;
+	TListaCalendario nuevaL2;
+	TListaCalendario auxL2(L2);
+	if(I_L1<=F_L1 && I_L2<=F_L2){//Rango Coherente
+		if(I_L1 <=0 || I_L2 <=0){
+			if(I_L1<=0 && I_L2 <=0){//Si F_L1 y F_L2 son menores o iguales que 0
+				nuevaL1=ExtraerRangoNM(1, F_L1);
+				nuevaL2= auxL2.ExtraerRangoNM(1, F_L2);
+			}
+			else if(I_L1<=0){//Si I_L1 es menor o igual que 0
+				nuevaL1=ExtraerRangoNM(1, F_L1);
+				nuevaL2=auxL2.ExtraerRangoNM(I_L2, F_L2);
+			}
+			else if(I_L2<=0){//Si I_L2 es menor o igual que 0
+				nuevaL1=ExtraerRangoNM(I_L1, F_L1);
+				nuevaL2=auxL2.ExtraerRangoNM(1, F_L2);
+			}
+		}
+		else if(F_L1>Longitud() || F_L2 > L2.Longitud()){
+			if(F_L1>Longitud() && F_L2 > L2.Longitud()){//Si F_L1 y F_L2 son mayores que el tamaño de sus listas
+					nuevaL1=ExtraerRangoNM(I_L1, Longitud());
+					nuevaL2=auxL2.ExtraerRangoNM(I_L2, Longitud());
+			}
+			else if(F_L1>Longitud()){//Si F_L1 es mayor que el tamaño de la lista F1(*this)
+				nuevaL1=ExtraerRangoNM(I_L1, Longitud());
+				nuevaL2=auxL2.ExtraerRangoNM(I_L2, F_L2);
+			}
+			else if(F_L2>auxL2.Longitud()){//Si F_L2 es mayor que el tamaño de la lista F2
+				nuevaL1=ExtraerRangoNM(I_L1, F_L1);
+				nuevaL2=auxL2.ExtraerRangoNM(I_L2, Longitud());
+			}
+		}
+		else{
+			nuevaL1=ExtraerRangoNM(I_L1, F_L1);
+			nuevaL2=auxL2.ExtraerRangoNM(I_L2, F_L2);
+		}
+	}
+	else{
+		if(I_L1>F_L1 && I_L2 > F_L2){//Si I_L1 y I_L2 son mayores que F_L1 Y F_L2
+		}
+		else if(I_L1>F_L1){//Si F_L1 es mayor que I_L1
+			nuevaL2=auxL2.ExtraerRangoNM(I_L2, F_L2);
+		}
+		else if(I_L2>F_L2){//Si F_L2 es mayor que F_L2
+			nuevaL1=ExtraerRangoNM(I_L1, F_L1);
+		}
+	}
+	return nuevaL1+nuevaL2;
 }
 
-TListaCalendario
-TListaCalendario::ExtraerRango(int n1, int n2){
-  TListaCalendario lc;
-  TListaPos lp, aux;
-  lp = Primera();
+TListaCalendario 
+TListaCalendario::ExtraerRango(int n1, int n2) {
+	TListaCalendario nueva;
+	TListaPos lp, aux;
+	lp=Primera();
+	if(n2>Longitud()){
+		n2=Longitud();
+	}
+	if(n1<=0){
+		n1=1;
+	}
+	if(n1<=n2){
+		for(int i=1;i<=n2;i++){
+			if(i>=n1){
+				nueva.Insertar(lp.pos->c);
+				aux=lp.Siguiente();
+				Borrar(lp.pos->c);
+				lp=aux;
+			}
+			else{
+				lp=lp.Siguiente();
+			}
+		}
+	}
+	return nueva;
+}
 
-  if(n1<=0){
-    n1=1;
-  }
-  if(n2>Longitud()){
-    n2 = Longitud();
-  }
-  if(n2>=n1){
-    for(int i=1; i<=n2; i++){
-      if(i>=n1){
-        lc.Insertar(lp.pos->c);
-        aux=lp.Siguiente();
-        Borrar(lp.pos->c);
-        lp = aux;
-      }
-      else{
-        lp = lp.Siguiente();
-      }
-
-    }
-  }
-
-  return lc;
+TListaCalendario 
+TListaCalendario::ExtraerRangoNM(int n1, int n2) {
+	TListaCalendario nueva;
+	TListaPos lp, aux;
+	lp=Primera();
+	if(n2>Longitud()){
+		n2=Longitud();
+	}
+	if(n1<=0){
+		n1=1;
+	}
+	if(n1<=n2){
+		for(int i=1;i<=n2;i++){
+			if(i>=n1){
+				nueva.Insertar(lp.pos->c);
+				aux=lp.Siguiente();
+				lp=aux;
+			}
+			else{
+				lp=lp.Siguiente();
+			}
+		}
+	}
+	return nueva;
 }
 
 ostream & operator<<(ostream &o,const TListaCalendario &lc){

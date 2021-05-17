@@ -48,6 +48,7 @@ class TListaCalendario {
 
   private:
     TNodoCalendario *primero;
+    TListaCalendario ExtraerRangoNM (int n1, int n2);
   public:
   TListaCalendario();
   TListaCalendario(const TListaCalendario &);
