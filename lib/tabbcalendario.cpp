@@ -78,19 +78,18 @@ TABBCalendario::EsVacio() const {
 }
 
 bool 
-TABBCalendario::Insertar(TCalendario &tcal){
+TABBCalendario::Insertar(TCalendario &c){
 	bool aux = false;
 
 	if (raiz==NULL){
 		raiz = new TNodoABB();
-		raiz->item=tcal;
-
+		raiz->item=c;
 		aux = true;
-	} else if (tcal < raiz->item){
-		aux = raiz->iz.Insertar(tcal);
+	} else if (c < raiz->item){
+		aux = raiz->iz.Insertar(c);
 
-	} else if (tcal > raiz->item){
-		aux = raiz->de.Insertar(tcal);
+	} else if (c > raiz->item){
+		aux = raiz->de.Insertar(c);
 
 	} 
 	return aux;

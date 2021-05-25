@@ -100,11 +100,9 @@ TAVLCalendario::Insertar(const TCalendario& c) {
 				creceiz= raiz->iz.Insertar(c);
 				crece=creceiz;
 			}
-			else{
-				if(Raiz()<c){
-					crecede= raiz->de.Insertar(c);
-					crece=crecede;
-				}
+			else if(Raiz()<c){
+				crecede= raiz->de.Insertar(c);
+				crece=crecede;
 			}
 
 			if(crece){
@@ -138,7 +136,8 @@ TAVLCalendario::Borrar(const TCalendario &cal){
 
 	if(!Buscar(cal)){
 		return false;
-	}else{
+	}
+	else{
 		if(Raiz() == cal){
 			if(raiz->de.EsVacio() && raiz->de.EsVacio()){
 				raiz = NULL;
@@ -327,7 +326,7 @@ TAVLCalendario::EquilibrarIzquierda() {
 	TAVLCalendario J, K;
 	TAVLCalendario* aux=this;
 	int facAux=0;
-	if(raiz->iz.raiz->fe==-1 ){ //Rotación II
+	if(raiz->iz.raiz->fe==-1 ){
 		Mover(J, raiz->iz);
 		Mover(raiz->iz, J.raiz->de);
 		Mover(J.raiz->de,aux);
@@ -335,7 +334,7 @@ TAVLCalendario::EquilibrarIzquierda() {
 		J.raiz->de.raiz->fe=J.raiz->de.Altura()-J.raiz->iz.Altura();
 		Mover(*this, J);
 	}
-	else{//Rotación ID
+	else{
 		Mover(J, raiz->iz);
 		Mover(K, J.raiz->de);
 		facAux=K.raiz->fe;
@@ -368,7 +367,7 @@ TAVLCalendario::EquilibrarDerecha() {
 	TAVLCalendario J, K;
 	TAVLCalendario* aux=this;
 	int facAux=0;
-	if(raiz->de.raiz->fe==1 || raiz->de.raiz->fe==0){ //Rotación DD
+	if(raiz->de.raiz->fe==1 || raiz->de.raiz->fe==0){ 
 		Mover(J, raiz->de);
 		Mover(raiz->de, J.raiz->iz);
 		Mover(J.raiz->iz,aux);
@@ -376,7 +375,7 @@ TAVLCalendario::EquilibrarDerecha() {
 		J.raiz->iz.raiz->fe=J.raiz->iz.raiz->de.Altura()-J.raiz->iz.raiz->iz.Altura();
 		Mover(*this, J);
 	}
-	else{//Rotación DI
+	else{
 		Mover(J, raiz->de);
 		Mover(K, J.raiz->iz);
 		facAux=K.raiz->fe;
