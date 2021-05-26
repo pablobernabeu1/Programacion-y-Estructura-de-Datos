@@ -13,7 +13,7 @@ $(LIBDIR)/%.o : $(LIBDIR)/%.cpp $(INCLUDEDIR)/%.h
 	$(CC) $(OPTIONS) $(DEBUG) -c -I$(INCLUDEDIR) -o $@ $<
 
 tar:
-	tar cvfz practica.tar.gz include lib src nombres.txt
+	tar cvzf practica.tar.gz include lib src nombres.txt
 
 clean:
 	rm -f $(OBJ)

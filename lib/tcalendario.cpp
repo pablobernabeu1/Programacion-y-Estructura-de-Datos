@@ -56,7 +56,6 @@ TCalendario::operator=(const TCalendario &c){
 TCalendario
 TCalendario::operator+(const int n){
     TCalendario temp(*this);
-    //preguntar si está esto bien o simplemente hay que sumar días.
 
     if(n>=0){
       temp.dia=temp.dia+n;
@@ -68,10 +67,10 @@ TCalendario::operator+(const int n){
         diaMes=31;
       }
       if(temp.mes==2){
-        if((temp.anyo%4==0) && ((temp.anyo%100!=0) || (temp.anyo%400==0))) {  // En este caso el año es bisiesto
+        if((temp.anyo%4==0) && ((temp.anyo%100!=0) || (temp.anyo%400==0))) { 
           diaMes = 29;
         }
-        else{   // En este caso el año no es bisiesto
+        else{  
           diaMes = 28;
         }
       }
@@ -91,10 +90,10 @@ TCalendario::operator+(const int n){
         }
 
         if(temp.mes==2){
-          if((temp.anyo%4==0) && ((temp.anyo%100!=0) || (temp.anyo%400==0))) {  // En este caso el año es bisiesto
+          if((temp.anyo%4==0) && ((temp.anyo%100!=0) || (temp.anyo%400==0))) {
             diaMes = 29;
           }
-          else{   // En este caso el año no es bisiesto
+          else{  
             diaMes = 28;
           }
         }
@@ -382,23 +381,23 @@ TCalendario::operator >(const TCalendario& c) {
           }
           else{
             if(dia==c.dia){
-              if(mensaje==NULL && c.mensaje==NULL){//NULL>NULL-->FALSE
+              if(mensaje==NULL && c.mensaje==NULL){
                 return false;
               }
-              else if(mensaje==NULL){//NULL>X-->FALSE
+              else if(mensaje==NULL){
                 return false;
               }
-              else if(c.mensaje==NULL){//X>NULL-->TRUE
+              else if(c.mensaje==NULL){
                 return true;
               }
               else{
-                if(strcmp(mensaje, c.mensaje)==0){//X>X-->FALSE
+                if(strcmp(mensaje, c.mensaje)==0){
                   return false;
                 }
-                else if(strcmp(mensaje, c.mensaje)>0){//X>Y-->TRUE
+                else if(strcmp(mensaje, c.mensaje)>0){
                   return true;
                 }
-                else{//Y>X-->FALSE
+                else{
                   return false;
                 }
 
@@ -431,23 +430,23 @@ TCalendario::operator <(const TCalendario& c) {
             }
             else{
               if(dia==c.dia){
-                if(mensaje==NULL && c.mensaje==NULL){//NULL<NULL-->FALSE
+                if(mensaje==NULL && c.mensaje==NULL){
                   return false;
                 }
-                else if(mensaje==NULL){//NULL<X-->TRUE
+                else if(mensaje==NULL){
                   return true;
                 }
-                else if(c.mensaje==NULL){//X<NULL-->FALSE
+                else if(c.mensaje==NULL){
                   return false;
                 }
                 else{
-                  if(strcmp(mensaje, c.mensaje)==0){//X<X-->FALSE
+                  if(strcmp(mensaje, c.mensaje)==0){
                     return false;
                   }
-                  else if(strcmp(mensaje, c.mensaje)<0){//X<Y-->TRUE
+                  else if(strcmp(mensaje, c.mensaje)<0){
                     return true;
                   }
-                  else{//Y<X-->FALSE
+                  else{
                     return false;
                   }
 

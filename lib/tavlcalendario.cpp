@@ -85,9 +85,8 @@ TAVLCalendario::EsVacio() const {
 
 bool 
 TAVLCalendario::Insertar(const TCalendario& c) {
-	bool crece=false;
-	bool creceiz=false;
-	bool crecede=false;
+	bool crece=false, creceiz=false, crecede=false;
+
 	if(!Buscar(c)){
 		if(EsVacio()){
 			TNodoAVL* aux=new TNodoAVL;
