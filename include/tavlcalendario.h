@@ -30,6 +30,15 @@ private:
 	void Mover(TAVLCalendario*&,TAVLCalendario*&);
 	TAVLCalendario* arbolMayor();
 
+	void equilibrado();
+	void rotacionDD();
+	void rotacionDI();
+	void rotacionID();
+	void rotacionII();
+	bool auxBuscar(TAVLCalendario a);
+	bool BorrarAux(const TCalendario &c);
+	TNodoAVL Max();
+
 public:
 	TAVLCalendario();
 	TAVLCalendario(const TAVLCalendario &);
@@ -38,6 +47,7 @@ public:
 
 	bool operator==(const TAVLCalendario &) const;
 	bool operator!=(const TAVLCalendario &) const;
+
 	bool EsVacio() const;
 	bool Insertar(const TCalendario &);
 	bool Borrar(const TCalendario &);
@@ -46,9 +56,11 @@ public:
 	int Altura() const;
 	int Nodos() const;
 	int NodosHoja() const;
+
 	TVectorCalendario Inorden() const;
 	TVectorCalendario Preorden() const;
 	TVectorCalendario Postorden() const;
+	
 
 	friend ostream & operator<<(ostream &, const TAVLCalendario &);
 };

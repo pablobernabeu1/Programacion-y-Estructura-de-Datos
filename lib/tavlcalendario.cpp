@@ -29,6 +29,7 @@ TNodoAVL::operator=(const TNodoAVL &tn){
 }
 
 
+
 // Métodos para TAVLCalendario
 
 
@@ -130,45 +131,45 @@ TAVLCalendario::Insertar(const TCalendario& c) {
 }
 
 bool 
-TAVLCalendario::Borrar(const TCalendario &cal){
-	TAVLCalendario tavl(*this);
+TAVLCalendario::Borrar(const TCalendario &c) {
+	bool borrado;
 
-	if(!Buscar(cal)){
-		return false;
-	}
-	else{
-		if(Raiz() == cal){
-			if(raiz->de.EsVacio() && raiz->de.EsVacio()){
-				raiz = NULL;
-				return true;
-			}
-			else if(!raiz->iz.EsVacio() && !raiz->de.EsVacio()){
-				if(tavl.raiz->iz.arbolMayor()->raiz->iz.EsVacio()){
-					raiz->item=raiz->iz.arbolMayor()->Raiz();
-					raiz->iz.arbolMayor()->~TAVLCalendario();
-				}
-				else{
-					raiz->item = raiz->iz.arbolMayor()->Raiz();
-				}
-			}
-			else if(!raiz->iz.EsVacio()) {
-				raiz = raiz->iz.raiz;
-			}
-			else {
-				raiz = raiz->de.raiz;
-			}
-		}
-		else if(Raiz()>cal){
-			raiz->iz.Borrar(cal);
-		}
+	if (Buscar(c)) {
+		if (raiz->item < c)
+			raiz->de.Borrar(c);
+		else if (raiz->item > c)
+			raiz->iz.Borrar(c);
 		else {
-			raiz->de.Borrar(cal);
-		}
-		reequilibrarFE();
-		return true;
-		
-	}
+			if (raiz->de.EsVacio()) {
+				TNodoAVL *aux = new TNodoAVL();
+				aux = raiz->iz.raiz;
+				raiz = aux;
+			} else if (raiz->iz.EsVacio()) {
+				TNodoAVL *aux = new TNodoAVL();
+				aux = raiz->de.raiz;
+				raiz = aux;
+			} else {
+				TNodoAVL *aux = new TNodoAVL(raiz->iz.Max());
+				TNodoAVL *aux2 = new TNodoAVL();
+				aux2 = raiz;
+				TCalendario *cal = new TCalendario(raiz->iz.Max().item);
 
+				aux->de = raiz->de;
+				aux2->iz.Borrar(*cal);
+				aux->iz = aux2->iz;
+
+				raiz = aux;
+			}
+		}
+		borrado=true;
+	} else {
+		borrado=false;
+	}
+	if(raiz!=NULL){
+		equilibrado();
+	}
+		
+	return borrado;
 }
 
 bool 
@@ -472,4 +473,107 @@ TAVLCalendario::arbolMayor() {
 			return this;
 		}
 	}
+}
+
+TNodoAVL
+TAVLCalendario::Max() {
+	TNodoAVL *aux = new TNodoAVL();
+	if (EsVacio()) {
+		return *aux;
+	}
+	if (raiz->de.EsVacio()) {
+		aux = raiz;
+		return *aux;
+	} else {
+
+		aux = new TNodoAVL(raiz->de.Max());
+		return *aux;
+	}
+
+	return *aux;
+}
+
+void
+TAVLCalendario::equilibrado() {
+
+
+	//se actualiza el factor de equilibrio
+	raiz->fe=raiz->de.Altura()-raiz->iz.Altura();
+
+	if(raiz->fe>1)
+	{
+		if(raiz->de.raiz->fe >= 0)
+			rotacionDD();
+		else
+			rotacionDI();
+
+		raiz->fe=raiz->de.Altura()-raiz->iz.Altura();
+		if (raiz->iz.raiz != NULL)
+			raiz->iz.raiz->fe = raiz->iz.raiz->de.Altura() - raiz->iz.raiz->iz.Altura();
+		if (raiz->de.raiz != NULL)
+			raiz->de.raiz->fe = raiz->de.raiz->de.Altura() - raiz->de.raiz->iz.Altura();
+	}
+	else if(raiz->fe<-1)
+	{
+		if(raiz->iz.raiz->fe <= 0)
+			rotacionII();
+		else
+			rotacionID();
+		//equilibrio=true;
+		raiz->fe = raiz->de.Altura() - raiz->iz.Altura();
+		if (raiz->iz.raiz != NULL)
+			raiz->iz.raiz->fe = raiz->iz.raiz->de.Altura() - raiz->iz.raiz->iz.Altura();
+		if (raiz->de.raiz != NULL)
+			raiz->de.raiz->fe = raiz->de.raiz->de.Altura() - raiz->de.raiz->iz.Altura();
+		//equilibrado();
+	}
+	else{}
+	raiz->fe=raiz->de.Altura()-raiz->iz.Altura();
+	if (raiz->iz.raiz != NULL)
+		raiz->iz.raiz->fe = raiz->iz.raiz->de.Altura() - raiz->iz.raiz->iz.Altura();
+	if (raiz->de.raiz != NULL)
+		raiz->de.raiz->fe = raiz->de.raiz->de.Altura() - raiz->de.raiz->iz.Altura();
+
+
+}
+
+void
+TAVLCalendario::rotacionDD() {
+	TNodoAVL *aux;
+	aux=raiz->de.raiz;
+	raiz->de.raiz= raiz->de.raiz->iz.raiz;
+	aux->iz.raiz = raiz;
+	raiz=aux;
+}
+
+void
+TAVLCalendario::rotacionDI() {
+	TNodoAVL *aux;
+	aux = raiz->de.raiz;
+	raiz->de.raiz = aux->iz.raiz->iz.raiz;
+	aux->iz.raiz->iz.raiz = raiz;
+	raiz = aux->iz.raiz;
+	aux->iz.raiz = raiz->de.raiz;
+	raiz->de.raiz = aux;
+
+}
+
+void
+TAVLCalendario::rotacionID() {
+	TNodoAVL *aux;
+	aux = raiz->iz.raiz;
+	raiz->iz.raiz = aux->de.raiz->de.raiz;
+	aux->de.raiz->de.raiz = raiz;
+	raiz = aux->de.raiz;
+	aux->de.raiz = raiz->iz.raiz;
+	raiz->iz.raiz = aux;
+}
+
+void
+TAVLCalendario::rotacionII() {
+	TNodoAVL *aux;
+	aux = raiz->iz.raiz;
+	raiz->iz.raiz = raiz->iz.raiz->de.raiz;
+	aux->de.raiz = raiz;
+	raiz = aux;
 }
